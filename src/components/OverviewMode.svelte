@@ -1,29 +1,43 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import type TorchInterface from '../interfaces/TorchInterface';
 	import IconButton from './IconButton.svelte';
 	import TorchItem from './TorchItem.svelte';
-	import { nanoid } from 'nanoid/non-secure';
 
 	export let torches: TorchInterface[] = [];
 
+	const dispatch = createEventDispatcher();
+
 	const addTorch = () => {
-		torches = torches.concat({
-			id: nanoid(10),
-			name: '',
-			isLit: false
+		dispatch('addtorch');
+	};
+
+	const deleteTorch = (torchToDelete: TorchInterface) => {
+		clearInterval(torchToDelete.intervalID);
+		torches = torches.filter((torch) => torch.id !== torchToDelete.id);
+	};
+
+	const pauseAllTorches = () => {
+		torches = torches.map((torch) => {
+			clearInterval(torch.intervalID);
+			torch.isLit = false;
+			return torch;
 		});
 	};
 
-	const deleteTorch = (id: string) => {
-		torches = torches.filter((torch) => torch.id !== id);
-	};
+	const sortTorches = () => {
+		pauseAllTorches();
+		torches = torches.sort((a, b) => a.timeLeft - b.timeLeft);
+	}
+
 </script>
 
 <div class="row-span-6 col-span-full w-full h-full flex flex-col justify-start items-center gap-6">
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:pause" on:click={() => {}} />
 			<IconButton icon="pixelarticons:plus" on:click={() => addTorch()} />
+			<IconButton icon="pixelarticons:pause" on:click={() => pauseAllTorches()} />
+			<IconButton icon="pixelarticons:sort" on:click={() => sortTorches()} />
 		</div>
 	</div>
 	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full">
@@ -33,7 +47,7 @@
 			</div>
 		{:else}
 			{#each torches as torch}
-				<TorchItem bind:torch on:delete={() => deleteTorch(torch.id)} />
+				<TorchItem bind:torch on:delete={() => deleteTorch(torch)} />
 			{/each}
 		{/if}
 	</div>

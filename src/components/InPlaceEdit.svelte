@@ -43,7 +43,7 @@
 {#if editing}
 	<form on:submit|preventDefault={submit} on:keydown={keydown}>
 		<input
-			class="bg-inherit border-none border-r-4 outline outline-1 outline-amber-500 text-center"
+			class="bg-inherit border-none border-r-4 outline outline-1 outline-sky-300 text-center"
 			bind:value
 			on:blur={submit}
 			{required}
