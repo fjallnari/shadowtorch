@@ -9,6 +9,7 @@
 	const dispatch = createEventDispatcher();
 
 	const addTorch = () => {
+		pauseAllTorches();
 		dispatch('addtorch');
 	};
 
@@ -28,11 +29,15 @@
 	const sortTorches = () => {
 		pauseAllTorches();
 		torches = torches.sort((a, b) => a.timeLeft - b.timeLeft);
-	}
-
+	};
 </script>
 
 <div class="row-span-6 col-span-full w-full h-full flex flex-col justify-start items-center gap-6">
+	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full">
+		<div class="">
+			<h1 class="text-3xl font-vt323 uppercase">Torch overview</h1>
+		</div>
+	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
 			<IconButton icon="pixelarticons:plus" on:click={() => addTorch()} />
