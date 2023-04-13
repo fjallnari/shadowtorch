@@ -6,16 +6,24 @@
 	import { createEventDispatcher } from 'svelte';
 	import AnimatedTorch from './AnimatedTorch.svelte';
 
-	export let switchTorch: (torch: TorchInterface | undefined) => void = () => {};
-	export let torchesLit: number = 0;
-	export let shortestTorch: TorchInterface | undefined = undefined;
-	export let longestTorch: TorchInterface | undefined = undefined;
+	export let torches: TorchInterface[];
+	export let torchesLit: number;
 
 	const dispatch = createEventDispatcher();
 
 	const addTorch = () => {
 		dispatch('addtorch');
 	};
+
+	$: shortestTorch =
+		torches.length == 0
+			? undefined
+			: torches.reduce((prev, curr) => (prev.timeLeft < curr.timeLeft ? prev : curr));
+	$: longestTorch =
+		torches.length == 0
+			? undefined
+			: torches.reduce((prev, curr) => (prev.timeLeft > curr.timeLeft ? prev : curr));
+
 </script>
 
 <div class="flex flex-col justify-evenly items-center row-span-3 col-span-full">

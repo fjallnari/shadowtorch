@@ -1,12 +1,13 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
-	import { ambientMode } from '../stores';
+	import { ambientMode, audioEnabled } from '../stores';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import type TorchInterface from '../interfaces/TorchInterface';
 	import { nanoid } from 'nanoid/non-secure';
 
 	let torches: TorchInterface[] = [];
+	let fireAmbience: HTMLAudioElement;
 
 	const addTorch = () => {
 		torches = torches.concat({
@@ -38,27 +39,28 @@
 	};
 
 	$: torchesLit = torches.filter((torch) => torch.isLit).length;
-	$: shortestTorch =
-		torches.length == 0
-			? undefined
-			: torches.reduce((prev, curr) => (prev.timeLeft < curr.timeLeft ? prev : curr));
-	$: longestTorch =
-		torches.length == 0
-			? undefined
-			: torches.reduce((prev, curr) => (prev.timeLeft > curr.timeLeft ? prev : curr));
+
+	$: if (fireAmbience) {
+		if ($audioEnabled && fireAmbience.paused && torchesLit > 0) {
+			fireAmbience.play();
+		} else if (!$audioEnabled || torchesLit === 0) {
+			fireAmbience.pause();
+		}
+	}
+
+
 </script>
 
 <div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323">
-	<Navbar />
+	<Navbar bind:fireAmbience/>
 	{#if $ambientMode}
 		<AmbientMode
 			on:addtorch={() => addTorch()}
-			{switchTorch}
-			bind:torchesLit
-			bind:shortestTorch
-			bind:longestTorch
+			{torches}
+			{torchesLit}
 		/>
 	{:else}
 		<OverviewMode bind:torches on:addtorch={() => addTorch()} />
 	{/if}
+	<audio src="mixkit-campfire-crackles-1330.wav" bind:this={fireAmbience} loop={true}></audio>
 </div>
