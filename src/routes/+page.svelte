@@ -62,5 +62,5 @@
 	{:else}
 		<OverviewMode bind:torches on:addtorch={() => addTorch()} />
 	{/if}
-	<audio src="mixkit-campfire-crackles-1330.wav" bind:this={fireAmbience} loop={true}></audio>
+	<audio src="mixkit-campfire-crackles-1330.mp3" bind:this={fireAmbience} loop={true}></audio>
 </div>
