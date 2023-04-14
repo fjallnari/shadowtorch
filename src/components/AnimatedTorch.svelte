@@ -32,7 +32,7 @@
 
 <style>
 	[data-sevenup] {
-		background-image: url('./sprites.png');
+		background-image: url('sprites.png');
 		background-size: 1062px 926px;
 	}
 	[data-sevenup='T1011.png'] {

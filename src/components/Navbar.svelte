@@ -12,7 +12,6 @@
 		audioEnabled.set(!$audioEnabled);
 		fireAmbience.muted = !$audioEnabled;
 	};
-
 </script>
 
 <div

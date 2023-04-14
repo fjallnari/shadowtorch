@@ -23,7 +23,6 @@
 		torches.length == 0
 			? undefined
 			: torches.reduce((prev, curr) => (prev.timeLeft > curr.timeLeft ? prev : curr));
-
 </script>
 
 <div class="flex flex-col justify-evenly items-center row-span-3 col-span-full">

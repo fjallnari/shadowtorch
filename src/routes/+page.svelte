@@ -47,20 +47,14 @@
 			fireAmbience.pause();
 		}
 	}
-
-
 </script>
 
 <div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323">
-	<Navbar bind:fireAmbience/>
+	<Navbar bind:fireAmbience />
 	{#if $ambientMode}
-		<AmbientMode
-			on:addtorch={() => addTorch()}
-			{torches}
-			{torchesLit}
-		/>
+		<AmbientMode on:addtorch={() => addTorch()} {torches} {torchesLit} />
 	{:else}
 		<OverviewMode bind:torches on:addtorch={() => addTorch()} />
 	{/if}
-	<audio src="mixkit-campfire-crackles-1330.mp3" bind:this={fireAmbience} loop={true}></audio>
+	<audio src="mixkit-campfire-crackles-1330.mp3" bind:this={fireAmbience} loop={true} />
 </div>
