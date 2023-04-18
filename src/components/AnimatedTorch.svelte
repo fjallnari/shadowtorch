@@ -15,6 +15,7 @@
 		'T1019',
 		'T1020'
 	];
+	const fireSpritePath = 'sprites.png';
 
 	let current = 0;
 	$: name = names[current];
@@ -28,11 +29,10 @@
 	});
 </script>
 
-<div data-sevenup="{name}.png" style="transform: translate({pos.x}px,{pos.y}px)" />
+<div data-sevenup="{name}.png" style="transform: translate({pos.x}px,{pos.y}px); background-image: url({fireSpritePath});"/>
 
 <style>
 	[data-sevenup] {
-		background-image: url('sprites.png');
 		background-size: 1062px 926px;
 	}
 	[data-sevenup='T1011.png'] {
