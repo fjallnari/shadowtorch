@@ -14,6 +14,7 @@
 	};
 
 	const deleteTorch = (torchToDelete: TorchInterface) => {
+		pauseAllTorches();
 		clearInterval(torchToDelete.intervalID);
 		torches = torches.filter((torch) => torch.id !== torchToDelete.id);
 	};

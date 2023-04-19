@@ -23,7 +23,7 @@
 			on:click={() => switchAudio()}
 		/>
 	</div>
-	<h1 class="w-full text-center text-3xl font-vt323 uppercase">Torch tracker</h1>
+	<h1 class="w-full text-center text-3xl font-vt323 uppercase">Shadowtorch</h1>
 	<div class="flex justify-center items-center w-16">
 		<IconButton
 			icon={$ambientMode ? 'pixelarticons:script-text' : 'pixelarticons:moon-stars'}
