@@ -34,6 +34,11 @@
 			}
 		}, 1000);
 	}
+
+	$: if (torch.timeLeft <= 0) {
+		deleteTorch();
+	}
+
 </script>
 
 <div

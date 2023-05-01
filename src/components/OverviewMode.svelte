@@ -31,6 +31,14 @@
 		pauseAllTorches();
 		torches = torches.sort((a, b) => a.timeLeft - b.timeLeft);
 	};
+
+	$: blownOutTorches = torches.filter(torch => torch.timeLeft <= 0);
+
+	$: if (blownOutTorches.length > 0) {
+		blownOutTorches.map(torch => deleteTorch(torch));
+	}
+
+
 </script>
 
 <div class="row-span-6 col-span-full w-full h-full flex flex-col justify-start items-center gap-6">

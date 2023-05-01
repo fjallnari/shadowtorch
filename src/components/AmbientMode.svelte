@@ -8,6 +8,7 @@
 
 	export let torches: TorchInterface[];
 	export let torchesLit: number;
+	export let shortestTorch: TorchInterface | undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -15,10 +16,7 @@
 		dispatch('addtorch');
 	};
 
-	$: shortestTorch =
-		torches.length == 0
-			? undefined
-			: torches.reduce((prev, curr) => (prev.timeLeft < curr.timeLeft ? prev : curr));
+
 	$: longestTorch =
 		torches.length == 0
 			? undefined

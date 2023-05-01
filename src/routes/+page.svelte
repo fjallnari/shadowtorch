@@ -8,6 +8,7 @@
 
 	let torches: TorchInterface[] = [];
 	let fireAmbience: HTMLAudioElement;
+	let torchBlowout: HTMLAudioElement;
 
 	const addTorch = () => {
 		torches = torches.concat({
@@ -43,18 +44,28 @@
 	$: if (fireAmbience) {
 		if ($audioEnabled && fireAmbience.paused && torchesLit > 0) {
 			fireAmbience.play();
+		} else if ($audioEnabled && torchesLit === 0 && (torches.length == 0 || (shortestTorch && shortestTorch?.timeLeft <= 0))) {
+			fireAmbience.pause();
+			torchBlowout.play();
 		} else if (!$audioEnabled || torchesLit === 0) {
 			fireAmbience.pause();
-		}
+		} 
 	}
+
+	$: shortestTorch =
+		torches.length == 0
+			? undefined
+			: torches.reduce((prev, curr) => (prev.timeLeft < curr.timeLeft ? prev : curr));
+
 </script>
 
 <div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323">
 	<Navbar bind:fireAmbience />
 	{#if $ambientMode}
-		<AmbientMode on:addtorch={() => addTorch()} {torches} {torchesLit} />
+		<AmbientMode on:addtorch={() => addTorch()} {torches} {torchesLit} bind:shortestTorch />
 	{:else}
 		<OverviewMode bind:torches on:addtorch={() => addTorch()} />
 	{/if}
 	<audio src="mixkit-campfire-crackles-1330.mp3" bind:this={fireAmbience} loop={true} />
+	<audio src="torch-blowout.mp3" bind:this={torchBlowout} />
 </div>
