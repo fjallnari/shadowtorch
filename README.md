@@ -1,6 +1,6 @@
 ## Shadowtorch
 
-![](demo.gif)
+<img src="demo.gif" alt="animated" width="200"/>
 
 Simple torch tracker for the Shadowdark TTRPG; ambient mode with animated torch and overview mode to easily keep track of multiple torches.
 
