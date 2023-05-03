@@ -3,6 +3,7 @@
 	import IconButton from './IconButton.svelte';
 
 	export let fireAmbience: HTMLAudioElement;
+	export let torchBlowout: HTMLAudioElement;
 
 	const switchView = () => {
 		ambientMode.set(!$ambientMode);
@@ -11,6 +12,7 @@
 	const switchAudio = () => {
 		audioEnabled.set(!$audioEnabled);
 		fireAmbience.muted = !$audioEnabled;
+		torchBlowout.muted = !$audioEnabled;
 	};
 </script>
 
