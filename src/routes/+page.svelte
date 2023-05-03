@@ -102,6 +102,7 @@
 	$: blownOutTorches = Object.keys(torches).filter((id) => torches[id].timeLeft <= 0);
 
 	$: if (blownOutTorches.length > 0) {
+		fireAmbience.pause();
 		torchBlowout.play();
 		blownOutTorches.map((id) => deleteTorch(id));
 	}
