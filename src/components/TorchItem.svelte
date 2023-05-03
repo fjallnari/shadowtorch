@@ -5,7 +5,7 @@
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import { prettyTime } from '../util/util';
 
-	export let torch: TorchInterface;
+	export let torch: Omit<TorchInterface, 'id'>;
 
 	const dispatch = createEventDispatcher();
 
@@ -34,6 +34,10 @@
 			}
 		}, 1000);
 	}
+
+	// $: if (torch.timeLeft <= 0) {
+	// 	deleteTorch();
+	// }
 </script>
 
 <div

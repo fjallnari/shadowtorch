@@ -29,7 +29,10 @@
 	});
 </script>
 
-<div data-sevenup="{name}.png" style="transform: translate({pos.x}px,{pos.y}px); background-image: url({fireSpritePath});"/>
+<div
+	data-sevenup="{name}.png"
+	style="transform: translate({pos.x}px,{pos.y}px); background-image: url({fireSpritePath});"
+/>
 
 <style>
 	[data-sevenup] {

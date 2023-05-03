@@ -6,4 +6,4 @@ Simple torch tracker for the Shadowdark TTRPG; ambient mode with animated torch 
 
 ---
 
-*Animated torch* was made by [NYKNCK](https://nyknck.itch.io/). *Fire ambience* by Mixkit provided under the [Mixkit Sound Effects Free License](https://mixkit.co/license/#sfxFree).
+_Animated torch_ was made by [NYKNCK](https://nyknck.itch.io/). _Fire ambience_ by Mixkit provided under the [Mixkit Sound Effects Free License](https://mixkit.co/license/#sfxFree).
