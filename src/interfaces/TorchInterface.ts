@@ -2,6 +2,6 @@ export default interface TorchInterface {
 	id: string;
 	name: string;
 	timeLeft: number;
-	intervalID?: NodeJS.Timer;
+	intervalID?: number;
 	isLit: boolean;
 }
