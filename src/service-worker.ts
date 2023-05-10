@@ -16,6 +16,11 @@ worker.addEventListener('install', (event) => {
             .open(FILES)
             .then((cache) => cache.addAll(to_cache))
             .then(() => {
+                caches
+                    .open(`offline${version}`)
+                    .then((cache) => {
+                        cache.addAll(["fire-ambience.mp3", "torch-blowout.mp3"]);
+                    })
                 worker.skipWaiting();
             })
     );

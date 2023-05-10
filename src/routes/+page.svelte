@@ -121,6 +121,6 @@
 	{:else}
 		<OverviewMode bind:torches on:add={addTorch} on:delete={handleDelete} />
 	{/if}
-	<audio src="mixkit-campfire-crackles-1330.mp3" bind:this={fireAmbience} loop={true} />
+	<audio src="fire-ambience.mp3" bind:this={fireAmbience} loop={true} />
 	<audio src="torch-blowout.mp3" bind:this={torchBlowout} />
 </div>
