@@ -72,7 +72,7 @@
 			<IconButton icon="pixelarticons:clock" on:click={() => decrementRound()} />
 		</div>
 	</div>
-	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full">
+	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full mb-4">
 		{#if Object.keys(torches).length === 0}
 			<div class="">
 				<h1 class="text-3xl font-vt323 uppercase">No torches</h1>
