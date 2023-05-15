@@ -10,15 +10,19 @@
 	export let torchesLit: number;
 	export let shortestTorch: string | undefined;
 	export let longestTorch: string | undefined;
+	let screenHeight = 0;
 
 	const dispatch = createEventDispatcher();
 
 	const addTorch = () => {
 		dispatch('addtorch');
 	};
+
+	$: imageScale =
+		screenHeight < 400 ? '0.25' : screenHeight < 530 ? '0.5' : screenHeight < 660 ? '0.75' : '1';
 </script>
 
-<div class="flex flex-col justify-evenly items-center row-span-3 col-span-full">
+<div class="flex flex-col justify-center items-center row-span-2 col-span-full gap-1">
 	<h1
 		class="text-3xl font-vt323 text-sky-300 {shortestTorch && !torches[shortestTorch]?.isLit
 			? 'animate-pulse'
@@ -46,14 +50,17 @@
 		</h1>
 	{/if}
 </div>
-<div class="flex justify-center items-center row-span-5 col-span-full">
+<div
+	class="flex justify-center items-center row-span-5 col-span-full min-h-0"
+	style="transform: scale({imageScale});"
+>
 	{#if torchesLit != 0}
 		<AnimatedTorch />
 	{:else}
-		<img src="torch-unlit.png" alt="unlit-torch" />
+		<img src="torch-unlit.png" alt="unlit-torch" width="177" height="463" />
 	{/if}
 </div>
-<div class="flex flex-col justify-evenly items-center row-span-3 col-span-full">
+<div class="flex flex-col justify-evenly items-center row-span-3 col-span-full mb-2">
 	{#if shortestTorch}
 		<h1 class="font-vt323 text-2xl text-zinc-400">
 			<InPlaceEdit bind:value={torches[shortestTorch].name} on:submit={() => {}} />
@@ -63,3 +70,4 @@
 		<IconButton icon="pixelarticons:plus" on:click={() => addTorch()} />
 	{/if}
 </div>
+<svelte:window bind:innerHeight={screenHeight} />
