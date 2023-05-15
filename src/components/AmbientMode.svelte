@@ -18,8 +18,8 @@
 		dispatch('addtorch');
 	};
 
-	$: imageScale = screenHeight < 400 ? '0.25' : screenHeight < 530 ? '0.5' : screenHeight < 660 ? '0.75' : '1';
-
+	$: imageScale =
+		screenHeight < 400 ? '0.25' : screenHeight < 530 ? '0.5' : screenHeight < 660 ? '0.75' : '1';
 </script>
 
 <div class="flex flex-col justify-center items-center row-span-2 col-span-full gap-1">
@@ -50,7 +50,10 @@
 		</h1>
 	{/if}
 </div>
-<div class="flex justify-center items-center row-span-5 col-span-full min-h-0" style="transform: scale({imageScale});">
+<div
+	class="flex justify-center items-center row-span-5 col-span-full min-h-0"
+	style="transform: scale({imageScale});"
+>
 	{#if torchesLit != 0}
 		<AnimatedTorch />
 	{:else}
