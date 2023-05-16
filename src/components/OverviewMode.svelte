@@ -79,7 +79,9 @@
 			</div>
 		{:else}
 			{#each Object.keys(torches) as torchID}
-				<TorchItem bind:torch={torches[torchID]} on:delete={() => deleteTorch(torchID)} />
+				{#if torches[torchID] && torches[torchID].timeLeft > 0}
+					<TorchItem bind:torch={torches[torchID]} on:delete={() => deleteTorch(torchID)} />
+				{/if}
 			{/each}
 		{/if}
 	</div>

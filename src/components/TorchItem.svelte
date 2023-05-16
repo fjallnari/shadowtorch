@@ -10,6 +10,7 @@
 	const dispatch = createEventDispatcher();
 
 	const deleteTorch = () => {
+		if (!torch) return;
 		dispatch('delete', {
 			torch
 		});
