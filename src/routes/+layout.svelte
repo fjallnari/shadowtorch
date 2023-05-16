@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import '../icons-bundle.ts';
 </script>
 
 <slot />

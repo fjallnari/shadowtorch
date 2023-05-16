@@ -10,6 +10,7 @@
 	const dispatch = createEventDispatcher();
 
 	const deleteTorch = () => {
+		if (!torch) return;
 		dispatch('delete', {
 			torch
 		});
@@ -76,8 +77,8 @@
 		-webkit-appearance: none;
 		appearance: none;
 		border-radius: 1px;
-		height: 0.5em;
-		width: 0.25em;
+		height: 1em;
+		width: 0.5em;
 		background: theme('colors.sky.500');
 		cursor: pointer;
 	}
