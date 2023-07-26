@@ -43,7 +43,7 @@
 
 <div
 	class="grid grid-flow-col grid-cols-6 grid-rows-2 {torch.isLit
-		? 'bg-sky-950'
+		? 'bg-accent-950'
 		: 'bg-stone-800'} w-11/12 py-1 md:w-96 shadow-md"
 >
 	<div class="row-span-2 col-span-2 flex justify-center items-center">
@@ -79,7 +79,7 @@
 		border-radius: 1px;
 		height: 1em;
 		width: 0.5em;
-		background: theme('colors.sky.500');
+		background: theme('colors.accent.500');
 		cursor: pointer;
 	}
 
@@ -89,7 +89,7 @@
 		border: none;
 		height: 1em;
 		width: 0.5em;
-		background: theme('colors.sky.500');
+		background: theme('colors.accent.500');
 		cursor: pointer;
 	}
 </style>

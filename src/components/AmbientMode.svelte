@@ -24,7 +24,7 @@
 
 <div class="flex flex-col justify-center items-center row-span-2 col-span-full gap-1">
 	<h1
-		class="text-3xl font-vt323 text-sky-300 {shortestTorch && !torches[shortestTorch]?.isLit
+		class="text-3xl font-vt323 text-accent-300 {shortestTorch && !torches[shortestTorch]?.isLit
 			? 'animate-pulse'
 			: ''}"
 	>

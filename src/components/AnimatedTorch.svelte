@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { THEMES } from '../util/themes';
+	import { colorTheme } from '../stores';
 
 	export let pos = { x: 0, y: 0 };
+
+	$: spritePath = THEMES.find((theme) => theme.id === $colorTheme)?.spritePath ?? '_torch/sprites.png';
 
 	const names = [
 		'T1011',
@@ -15,7 +19,6 @@
 		'T1019',
 		'T1020'
 	];
-	const fireSpritePath = 'sprites.png';
 
 	let current = 0;
 	$: name = names[current];
@@ -31,7 +34,7 @@
 
 <div
 	data-sevenup="{name}.png"
-	style="transform: translate({pos.x}px,{pos.y}px); background-image: url({fireSpritePath});"
+	style="transform: translate({pos.x}px,{pos.y}px); background-image: url({spritePath});"
 />
 
 <style>

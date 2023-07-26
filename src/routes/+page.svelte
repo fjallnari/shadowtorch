@@ -1,10 +1,14 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
-	import { ambientMode, audioEnabled } from '../stores';
+	import { activeView, audioEnabled, colorTheme } from '../stores';
 	import type TorchInterface from '../interfaces/TorchInterface';
 	import { nanoid } from 'nanoid/non-secure';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
+	import Settings from '../components/Settings.svelte';
+	import { THEMES } from '../util/themes';
+	import { onMount } from 'svelte';
+	import { cssVarTheme } from '../util/util';
 
 	let torches: Record<string, Omit<TorchInterface, 'id'>> = {};
 	let fireAmbience: HTMLAudioElement;
@@ -30,26 +34,6 @@
 		}, 1000);
 		torches[id].isLit = true;
 	}
-
-	// const switchTorch = (torch: TorchInterface | undefined) => {
-	// 	if (!torch) return;
-
-	// 	torches = torches.map((torchIter) => {
-	// 		if (torchIter.id === torch.id) {
-	// 			torchIter.isLit = !torchIter.isLit;
-	// 			if (torchIter.isLit) {
-	// 				torchIter.intervalID = setInterval(() => {
-	// 					torchIter.timeLeft -= 1;
-	// 					if (torchIter.timeLeft === 0) {
-	// 						clearInterval(torchIter.intervalID);
-	// 						torchIter.isLit = false;
-	// 					}
-	// 				}, 1000);
-	// 			}
-	// 		}
-	// 		return torchIter;
-	// 	});
-	// };
 
 	const handleDelete = (event: any) => {
 		const id = event.detail.id;
@@ -106,11 +90,14 @@
 		torchBlowout.play();
 		blownOutTorches.map((id) => deleteTorch(id));
 	}
+
 </script>
 
-<div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323">
-	<Navbar bind:fireAmbience bind:torchBlowout />
-	{#if $ambientMode}
+<div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323" 
+	style="{cssVarTheme(THEMES.find(theme => theme.id === $colorTheme) ?? THEMES[0])}"
+>
+	<Navbar />
+	{#if $activeView === 'ambient'}
 		<AmbientMode
 			bind:torches
 			bind:shortestTorch
@@ -118,8 +105,10 @@
 			bind:torchesLit
 			on:addtorch={() => addTorch()}
 		/>
-	{:else}
+	{:else if $activeView === 'overview'}
 		<OverviewMode bind:torches on:add={addTorch} on:delete={handleDelete} />
+	{:else}
+		<Settings bind:fireAmbience bind:torchBlowout />
 	{/if}
 	<audio src="fire-ambience.mp3" bind:this={fireAmbience} loop={true} />
 	<audio src="torch-blowout.mp3" bind:this={torchBlowout} />

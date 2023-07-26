@@ -14,7 +14,7 @@
 </script>
 
 <div
-	class="flex justify-center items-center w-full cursor-pointer transition ease-in duration-100 active:text-sky-300"
+	class="flex justify-center items-center w-full cursor-pointer transition ease-in duration-100 active:text-accent-300"
 	on:click={() => clickButton()}
 	on:keyup={() => {}}
 >
