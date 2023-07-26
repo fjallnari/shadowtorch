@@ -14,7 +14,7 @@
 	<div class="flex justify-center items-center w-16">
 		{#if $activeView === 'ambient' || $activeView === 'overview'}
 			<IconButton
-				icon={'pixelarticons:dashbaord'}
+				icon={'pixelarticons:dashboard'}
 				on:click={() => switchView('settings')}
 			/>
 		{:else}

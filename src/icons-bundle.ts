@@ -36,6 +36,9 @@ addCollection({
         },
         "clock": {
             "body": "<path fill=\"currentColor\" d=\"M19 3H5v2H3v14h2v2h14v-2h2V5h-2V3zm0 2v14H5V5h14zm-8 2h2v6h4v2h-6V7z\"/>"
+        },
+        "dashboard": {
+            "body": '<path fill=\"currentColor\" d=\"M3 3h8v10H3V3zm2 2v6h4V5H5zm8-2h8v6h-8V3zm2 2v2h4V5h-4zm-2 6h8v10h-8V11zm2 2v6h4v-6h-4zM3 15h8v6H3v-6zm2 2v2h4v-2H5z\"/>'
         }
     }
 });
