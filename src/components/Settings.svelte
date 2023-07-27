@@ -53,11 +53,8 @@
             Fire ambience by Mixkit provided under the <a href="https://mixkit.co/license/#sfxFree" title="Mixkit License" class="text-accent-300">Mixkit Sound Effects Free License</a>.
         </p>
         <p class="text-center">
-            App created by <a href="https://github.com/fjallnari" title="fjallnari" class="text-accent-300">fjallnari</a> under the MIT license.
+            App created by <a href="https://github.com/fjallnari" title="fjallnari" class="text-accent-300">fjallnari</a>, is <a href="https://github.com/fjallnari/shadowtorch" title="source code" class="text-accent-300">open-sourced</a> under the MIT license.
         </p>
         <h1 class="text-2xl uppercase">about</h1>
     </div>
-    <a class="w-12 h-12" href="https://github.com/fjallnari/shadowtorch">
-        <img src="github.png" alt="github" class="w-full h-full"/>
-    </a>
 </div>
