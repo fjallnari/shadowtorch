@@ -5,9 +5,8 @@
 	import { colorTheme } from '../stores';
 
 	onMount(() => {
-		colorTheme.set(localStorage.theme || "default");
+		colorTheme.set(localStorage.theme || 'default');
 	});
-
 </script>
 
 <slot />

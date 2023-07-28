@@ -1,4 +1,4 @@
-import type Theme from "../interfaces/Theme";
+import type Theme from '../interfaces/Theme';
 
 export const randomColor = () => {
 	return (
@@ -26,10 +26,11 @@ export const prettyTime = (timeInSeconds: number) => {
 	return `${padWithZeroes(minutes)}:${padWithZeroes(remainingSeconds)}`;
 };
 
-export const cssVarTheme = (theme: Theme) => Object.entries(theme)
-    .map(([key, value]) => {
-        if (key !== 'id' && key !== 'name' && key !== 'spritePath') {
-            return `${key}:${value}`;
-        }
-    })
-    .join(';');
+export const cssVarTheme = (theme: Theme) =>
+	Object.entries(theme)
+		.map(([key, value]) => {
+			if (key !== 'id' && key !== 'name' && key !== 'spritePath') {
+				return `${key}:${value}`;
+			}
+		})
+		.join(';');

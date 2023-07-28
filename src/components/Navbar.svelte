@@ -5,7 +5,6 @@
 	const switchView = (newView: string) => {
 		activeView.set(newView);
 	};
-
 </script>
 
 <div
@@ -13,29 +12,17 @@
 >
 	<div class="flex justify-center items-center w-16">
 		{#if $activeView === 'ambient' || $activeView === 'overview'}
-			<IconButton
-				icon={'pixelarticons:dashboard'}
-				on:click={() => switchView('settings')}
-			/>
+			<IconButton icon={'pixelarticons:dashboard'} on:click={() => switchView('settings')} />
 		{:else}
-			<IconButton
-				icon={'pixelarticons:moon-stars'}
-				on:click={() => switchView('ambient')}
-			/>
+			<IconButton icon={'pixelarticons:moon-stars'} on:click={() => switchView('ambient')} />
 		{/if}
 	</div>
 	<h1 class="w-full text-center text-3xl font-vt323 uppercase">Shadowtorch</h1>
 	<div class="flex justify-center items-center w-16">
 		{#if $activeView === 'ambient' || $activeView === 'settings'}
-			<IconButton
-				icon={'pixelarticons:script-text'}
-				on:click={() => switchView('overview')}
-			/>
+			<IconButton icon={'pixelarticons:script-text'} on:click={() => switchView('overview')} />
 		{:else}
-			<IconButton
-				icon={'pixelarticons:moon-stars'}
-				on:click={() => switchView('ambient')}
-			/>
+			<IconButton icon={'pixelarticons:moon-stars'} on:click={() => switchView('ambient')} />
 		{/if}
 	</div>
 </div>

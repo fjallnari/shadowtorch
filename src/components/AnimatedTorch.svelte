@@ -5,7 +5,8 @@
 
 	export let pos = { x: 0, y: 0 };
 
-	$: spritePath = THEMES.find((theme) => theme.id === $colorTheme)?.spritePath ?? '_torch/sprites.png';
+	$: spritePath =
+		THEMES.find((theme) => theme.id === $colorTheme)?.spritePath ?? '_torch/sprites.png';
 
 	const names = [
 		'T1011',

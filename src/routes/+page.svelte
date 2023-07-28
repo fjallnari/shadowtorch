@@ -90,11 +90,11 @@
 		torchBlowout.play();
 		blownOutTorches.map((id) => deleteTorch(id));
 	}
-
 </script>
 
-<div class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323" 
-	style="{cssVarTheme(THEMES.find(theme => theme.id === $colorTheme) ?? THEMES[0])}"
+<div
+	class="w-screen h-screen grid grid-flow-row grid-cols-6 gap-4 font-vt323"
+	style={cssVarTheme(THEMES.find((theme) => theme.id === $colorTheme) ?? THEMES[0])}
 >
 	<Navbar />
 	{#if $activeView === 'ambient'}

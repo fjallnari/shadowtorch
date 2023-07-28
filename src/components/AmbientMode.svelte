@@ -19,7 +19,7 @@
 	};
 
 	$: imageScale =
-		screenHeight < 400 ? '0.25' : screenHeight < 530 ? '0.5' : screenHeight < 660 ? '0.75' : '1';
+		screenHeight < 425 ? '0.3388' : screenHeight < 560 ? '0.565' : screenHeight < 660 ? '0.87' : '1';
 </script>
 
 <div class="flex flex-col justify-center items-center row-span-2 col-span-full gap-1">
