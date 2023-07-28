@@ -51,13 +51,12 @@
 		/>
 	</form>
 {:else}
-	<div
-		class="border border-solid border-transparent {isTextNonEmpty(value) ? '' : ' placeholder'}"
+	<button
+		class="cursor-text border border-solid border-transparent {isTextNonEmpty(value) ? '' : ' placeholder'}"
 		on:click={() => edit()}
-		on:keyup={() => {}}
 	>
 		{getDefaultIfEmpty(value, defaultValue)}
-	</div>
+	</button>
 {/if}
 
 <style>

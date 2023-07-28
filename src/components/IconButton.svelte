@@ -13,10 +13,9 @@
 	}
 </script>
 
-<div
+<button
 	class="flex justify-center items-center w-full cursor-pointer transition ease-in duration-100 active:text-accent-300"
 	on:click={() => clickButton()}
-	on:keyup={() => {}}
 >
 	<Icon {icon} {height} {width} />
-</div>
+</button>
