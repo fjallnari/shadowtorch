@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
 	appId: 'app.vercel.shadowtorch',
-	appName: ' shadowtorch',
+	appName: 'shadowtorch',
 	webDir: 'build',
 	server: {
 		androidScheme: 'https'

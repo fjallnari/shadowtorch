@@ -65,7 +65,7 @@
 		</p>
 		<p class="text-center">
 			App created by <a
-				href="https://github.com/fjallnari"
+				href="https://fjallnari.com/"
 				title="fjallnari"
 				class="text-accent-300">fjallnari</a
 			>, is
