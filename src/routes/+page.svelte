@@ -7,8 +7,11 @@
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
-	import { onMount } from 'svelte';
 	import { cssVarTheme } from '../util/util';
+	import dayjs from 'dayjs';
+	import utc from 'dayjs/plugin/utc';
+
+	dayjs.extend(utc);
 
 	let torches: Record<string, Omit<TorchInterface, 'id'>> = {};
 	let fireAmbience: HTMLAudioElement;
@@ -18,16 +21,21 @@
 		const id = nanoid(10);
 
 		torches = Object.assign(torches, {
-			[id]: { name: '', timeLeft: 3600, isLit: false }
+			[id]: {
+				name: '',
+				timeLeft: 3600,
+				endTime: dayjs().utc().add(1, 'h'),
+				isLit: false
+			}
 		});
 
 		lightTorch(id);
 	};
 
 	function lightTorch(id: string) {
-		torches[id].intervalID = setInterval(() => {
+		torches[id].intervalID = window.setInterval(() => {
 			torches[id].timeLeft -= 1;
-			if (torches[id].timeLeft === 0) {
+			if (torches[id].timeLeft <= 0 && dayjs().utc().isAfter(torches[id].endTime)) {
 				clearInterval(torches[id].intervalID);
 				torches[id].isLit = false;
 			}

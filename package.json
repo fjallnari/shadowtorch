@@ -1,5 +1,5 @@
 {
-	"name": "light-keeper",
+	"name": "shadowtorch",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -12,12 +12,14 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@capacitor-community/keep-awake": "^4.0.0",
 		"@capacitor/android": "^5.7.0",
 		"@capacitor/assets": "^2.0.4",
 		"@capacitor/cli": "^5.7.0",
 		"@capacitor/core": "^5.7.0",
 		"@capacitor/ios": "^5.7.0",
 		"@iconify/svelte": "^3.1.6",
+		"@owlbear-rodeo/sdk": "^2.3.0",
 		"@sveltejs/adapter-auto": "^2.1.1",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.30.3",

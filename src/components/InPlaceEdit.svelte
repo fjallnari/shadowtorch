@@ -52,7 +52,9 @@
 	</form>
 {:else}
 	<button
-		class="cursor-text border border-solid border-transparent {isTextNonEmpty(value) ? '' : ' placeholder'}"
+		class="cursor-text border border-solid border-transparent {isTextNonEmpty(value)
+			? ''
+			: ' placeholder'}"
 		on:click={() => edit()}
 	>
 		{getDefaultIfEmpty(value, defaultValue)}

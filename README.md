@@ -5,8 +5,9 @@
 Simple multi-torch tracker for the Shadowdark TTRPG
 
 **Features**
- - *Ambient mode* - animated torch, fire ambience w/ blowout sound, 9 app/fire themes
- - *Overview mode* - easily keep track of multiple torches (sort/pause all/decrement 10 mins)
+
+- _Ambient mode_ - animated torch, fire ambience w/ blowout sound, 9 app/fire themes
+- _Overview mode_ - easily keep track of multiple torches (sort/pause all/decrement 10 mins)
 
 ---
 

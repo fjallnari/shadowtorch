@@ -64,10 +64,8 @@
 			>.
 		</p>
 		<p class="text-center">
-			App created by <a
-				href="https://fjallnari.com/"
-				title="fjallnari"
-				class="text-accent-300">fjallnari</a
+			App created by <a href="https://fjallnari.com/" title="fjallnari" class="text-accent-300"
+				>fjallnari</a
 			>, is
 			<a href="https://github.com/fjallnari/shadowtorch" title="source code" class="text-accent-300"
 				>open-sourced</a

@@ -3,6 +3,10 @@
 	import type TorchInterface from '../interfaces/TorchInterface';
 	import IconButton from './IconButton.svelte';
 	import TorchItem from './TorchItem.svelte';
+	import dayjs from 'dayjs';
+	import utc from 'dayjs/plugin/utc';
+
+	dayjs.extend(utc);
 
 	export let torches: Record<string, Omit<TorchInterface, 'id'>>;
 
@@ -37,13 +41,16 @@
 		if (Object.keys(torches).length === 0) return;
 		torches = Object.assign(
 			{},
-			...Object.keys(torches).map((idIter) => ({
-				[idIter]: Object.assign(torches[idIter], {
-					timeLeft: torches[idIter].isLit
-						? torches[idIter].timeLeft - 600
-						: torches[idIter].timeLeft
-				})
-			}))
+			...Object.keys(torches).map((idIter) => {
+				const torch = torches[idIter];
+				const newTimeLeft = torch.isLit ? torch.timeLeft - 600 : torch.timeLeft;
+				return {
+					[idIter]: Object.assign(torch, {
+						timeLeft: newTimeLeft,
+						endTime: dayjs().utc().add(newTimeLeft, 's')
+					})
+				};
+			})
 		);
 	};
 

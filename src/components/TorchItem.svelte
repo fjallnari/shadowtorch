@@ -4,6 +4,9 @@
 	import IconButton from './IconButton.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import { prettyTime } from '../util/util';
+	import dayjs from 'dayjs';
+	import utc from 'dayjs/plugin/utc';
+	dayjs.extend(utc);
 
 	export let torch: Omit<TorchInterface, 'id'>;
 
@@ -27,9 +30,10 @@
 	};
 
 	function lightTorch() {
+		torch.endTime = dayjs().utc().add(torch.timeLeft, 's');
 		torch.intervalID = setInterval(() => {
 			torch.timeLeft -= 1;
-			if (torch.timeLeft === 0) {
+			if (dayjs().utc().isAfter(torch.endTime)) {
 				clearInterval(torch.intervalID);
 				torch.isLit = false;
 			}
@@ -60,6 +64,7 @@
 			id="time-range"
 			type="range"
 			max="3600"
+			on:change={() => (torch.endTime = dayjs().utc().add(torch.timeLeft, 's'))}
 			class="w-full h-2 bg-stone-700 rounded-none appearance-none cursor-pointer shadow-md"
 		/>
 	</div>
