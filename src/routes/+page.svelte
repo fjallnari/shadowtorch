@@ -32,6 +32,9 @@
 			}
 		}, 1000);
 		torches[id].isLit = true;
+		if (fireAmbience.paused) {
+			fireAmbience.play();
+		}
 	}
 
 	const handleDelete = (event: any) => {
@@ -59,14 +62,10 @@
 		);
 	};
 
-	$: torchesLit = Object.keys(torches).filter((id) => torches[id].isLit)?.length;
+	$: torchesLit = Object.keys(torches).filter((id) => torches[id].isLit).length;
 
-	$: if (fireAmbience && torchBlowout) {
-		if (fireAmbience.paused && torchesLit > 0) {
-			fireAmbience.play();
-		} else if (torchesLit === 0) {
-			fireAmbience.pause();
-		}
+	$: if (fireAmbience && torchesLit === 0) {
+		fireAmbience.pause();
 	}
 
 	$: shortestTorch =
@@ -90,6 +89,9 @@
 		torchBlowout.play();
 		blownOutTorches.map((id) => deleteTorch(id));
 		blownOutTorches = [];
+		if (torchesLit != 0) {
+			fireAmbience.play();
+		}
 	}
 </script>
 
