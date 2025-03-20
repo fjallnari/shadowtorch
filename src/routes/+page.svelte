@@ -1,13 +1,12 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
-	import { activeView, audioEnabled, colorTheme } from '../stores';
+	import { activeView, colorTheme } from '../stores';
 	import type TorchInterface from '../interfaces/TorchInterface';
 	import { nanoid } from 'nanoid/non-secure';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
-	import { onMount } from 'svelte';
 	import { cssVarTheme } from '../util/util';
 
 	let torches: Record<string, Omit<TorchInterface, 'id'>> = {};
@@ -41,7 +40,8 @@
 	};
 
 	const deleteTorch = (id: string) => {
-		clearInterval(torches[id].intervalID);
+		if (!torches[id]) return;
+		clearInterval(torches[id]?.intervalID);
 
 		shortestTorch = shortestTorch === id ? undefined : shortestTorch;
 		longestTorch = longestTorch === id ? undefined : longestTorch;
@@ -59,7 +59,7 @@
 		);
 	};
 
-	$: torchesLit = Object.keys(torches).filter((id) => torches[id].isLit).length;
+	$: torchesLit = Object.keys(torches).filter((id) => torches[id].isLit)?.length;
 
 	$: if (fireAmbience && torchBlowout) {
 		if (fireAmbience.paused && torchesLit > 0) {

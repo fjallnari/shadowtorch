@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import type Theme from '../interfaces/Theme';
-	import { audioEnabled, colorTheme } from '../stores';
+	import { blowoutSoundEnabled, ambienceSoundEnabled, colorTheme } from '../stores';
 	import { THEMES } from '../util/themes';
 	import { cssVarTheme } from '../util/util';
 	import IconButton from './IconButton.svelte';
@@ -9,10 +8,14 @@
 	export let fireAmbience: HTMLAudioElement;
 	export let torchBlowout: HTMLAudioElement;
 
-	const switchAudio = () => {
-		audioEnabled.set(!$audioEnabled);
-		fireAmbience.muted = !$audioEnabled;
-		torchBlowout.muted = !$audioEnabled;
+	const switchAmbienceSound = () => {
+		ambienceSoundEnabled.set(!$ambienceSoundEnabled);
+		fireAmbience.muted = !$ambienceSoundEnabled;
+	};
+
+	const switchBlowoutSound = () => {
+		blowoutSoundEnabled.set(!$blowoutSoundEnabled);
+		torchBlowout.muted = !$blowoutSoundEnabled;
 	};
 
 	const selectTheme = (theme: Theme) => {
@@ -25,14 +28,21 @@
 	class="row-span-6 col-span-full w-full h-full flex flex-col justify-start items-center gap-10 font-vt323"
 >
 	<h1 class="text-3xl uppercase">settings</h1>
-	<div class="flex flex-col justify-center items-center w-full gap-4">
+	<div class="flex flex-col md:flex-row justify-center items-center w-full gap-4">
 		<div class="w-fit">
 			<IconButton
-				icon={$audioEnabled ? 'pixelarticons:volume-3' : 'pixelarticons:volume-x'}
-				on:click={() => switchAudio()}
+				icon={$ambienceSoundEnabled ? '@custom:pixel:fire' : 'pixelarticons:volume-x'}
+				on:click={() => switchAmbienceSound()}
 			/>
 		</div>
-		<h1 class="text-2xl uppercase">sounds on/off</h1>
+		<h1 class="text-2xl uppercase">fire ambience on/off</h1>
+		<div class="w-fit">
+			<IconButton
+				icon={$blowoutSoundEnabled ? 'pixelarticons:wind' : 'pixelarticons:volume-x'}
+				on:click={() => switchBlowoutSound()}
+			/>
+		</div>
+		<h1 class="text-2xl uppercase">blowout on/off</h1>
 	</div>
 	<div class="flex flex-col justify-center items-center w-11/12 gap-4">
 		<div class="grid grid-cols-3 gap-2">
