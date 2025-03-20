@@ -89,6 +89,7 @@
 		fireAmbience.pause();
 		torchBlowout.play();
 		blownOutTorches.map((id) => deleteTorch(id));
+		blownOutTorches = [];
 	}
 </script>
 
