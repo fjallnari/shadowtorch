@@ -17,10 +17,3 @@
 </script>
 
 <slot />
-
-<style lang="postcss">
-	:root {
-		background-color: theme(colors.stone.900);
-		color: theme(colors.zinc.100);
-	}
-</style>

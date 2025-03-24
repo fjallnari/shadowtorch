@@ -113,6 +113,6 @@
 	{:else}
 		<Settings bind:fireAmbience bind:torchBlowout />
 	{/if}
-	<audio src="fire-ambience.mp3" bind:this={fireAmbience} loop={true} />
-	<audio src="torch-blowout.mp3" bind:this={torchBlowout} />
+	<audio src="fire-ambience.mp3" bind:this={fireAmbience} loop={true} ></audio>
+	<audio src="torch-blowout.mp3" bind:this={torchBlowout} ></audio>
 </div>

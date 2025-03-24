@@ -48,12 +48,14 @@
 		<div class="grid grid-cols-3 gap-2">
 			{#each THEMES as theme}
 				<button
+					aria-label="theme-switch"
+					data-theme="minimalist"
 					class="w-10 h-10 p-1 bg-accent-300 {$colorTheme === theme.id
 						? 'bg-clip-content border-2 border-solid'
 						: ''}"
 					style={cssVarTheme(theme)}
 					on:click={() => selectTheme(theme)}
-				/>
+				></button>
 			{/each}
 		</div>
 		<h1 class="text-2xl uppercase">theme</h1>

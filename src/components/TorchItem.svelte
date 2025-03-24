@@ -79,7 +79,7 @@
 		border-radius: 1px;
 		height: 1em;
 		width: 0.5em;
-		background: theme('colors.accent.500');
+		background: #f9fafb;
 		cursor: pointer;
 	}
 
@@ -89,7 +89,8 @@
 		border: none;
 		height: 1em;
 		width: 0.5em;
-		background: theme('colors.accent.500');
+		background: #f9fafb;
+		/* theme('colors.accent.500'); */
 		cursor: pointer;
 	}
 </style>
