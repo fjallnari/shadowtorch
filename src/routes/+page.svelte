@@ -1,98 +1,61 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
 	import { activeView, colorTheme } from '../stores';
-	import type TorchInterface from '../interfaces/TorchInterface';
-	import { nanoid } from 'nanoid/non-secure';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
 	import { cssVarTheme } from '../util/util';
+	import Torches from '../classes/Torches.svelte';
+	import AMBIENCE from '../classes/Ambience.svelte';
 
-	let torches: Record<string, Omit<TorchInterface, 'id'>> = {};
-	let fireAmbience: HTMLAudioElement;
-	let torchBlowout: HTMLAudioElement;
+	let t = $state(new Torches());
 
-	const addTorch = () => {
-		const id = nanoid(10);
+	let torchesLit = $derived(Object.keys(t.torches).filter((id) => t.torches[id].isLit).length);
 
-		torches = Object.assign(torches, {
-			[id]: { name: '', timeLeft: 3600, isLit: false }
-		});
+	/**
+	 * Derives the shortest torch, i.e. the torch with the least time left
+	 */
+	let shortestTorch = $derived.by(() => {
+		if (Object.keys(t.torches).length === 0 || torchesLit === 0) {
+			return undefined;
+		}
+		return Object.keys(t.torches)
+			.filter((id) => t.torches[id].isLit)
+			.reduce((prev, curr) => (t.torches[prev].timeLeft < t.torches[curr].timeLeft ? prev : curr));
+	});
 
-		lightTorch(id);
-	};
+	/* Derives the longest torch, i.e. the torch with the most time left */
+	let longestTorch = $derived.by(() => {
+		if (Object.keys(t.torches).length === 0 || torchesLit === 0) {
+			return undefined;
+		}
+		return Object.keys(t.torches)
+			.filter((id) => t.torches[id].isLit)
+			.reduce((prev, curr) => (t.torches[prev].timeLeft > t.torches[curr].timeLeft ? prev : curr));
+	});
 
-	function lightTorch(id: string) {
-		torches[id].intervalID = setInterval(() => {
-			torches[id].timeLeft -= 1;
-			if (torches[id].timeLeft === 0) {
-				clearInterval(torches[id].intervalID);
-				torches[id].isLit = false;
+	let blownOutTorches = $derived(Object.keys(t.torches).filter((id) => t.torches[id].timeLeft <= 0));
+
+	$effect(() => {
+		if (blownOutTorches.length > 0) {
+			AMBIENCE.fire?.pause();
+			AMBIENCE.blowout?.play();
+
+			blownOutTorches.map((id) => t.deleteTorch(id));
+			blownOutTorches = [];
+
+			if (torchesLit != 0) {
+				AMBIENCE.fire?.play();
 			}
-		}, 1000);
-		torches[id].isLit = true;
-		if (fireAmbience.paused) {
-			fireAmbience.play();
 		}
-	}
+	});
 
-	const handleDelete = (event: any) => {
-		const id = event.detail.id;
-		deleteTorch(id);
-	};
-
-	const deleteTorch = (id: string) => {
-		if (!torches[id]) return;
-		clearInterval(torches[id]?.intervalID);
-
-		shortestTorch = shortestTorch === id ? undefined : shortestTorch;
-		longestTorch = longestTorch === id ? undefined : longestTorch;
-
-		// ? Uncomment if we want to play blowout when torch is deleted
-		// if (torches[id].isLit) {
-		// 	torchBlowout.play();
-		// }
-
-		torches = Object.assign(
-			{},
-			...Object.keys(torches)
-				.filter((idIter) => idIter != id)
-				.map((idIter) => ({ [idIter]: torches[idIter] }))
-		);
-	};
-
-	$: torchesLit = Object.keys(torches).filter((id) => torches[id].isLit).length;
-
-	$: if (fireAmbience && torchesLit === 0) {
-		fireAmbience.pause();
-	}
-
-	$: shortestTorch =
-		Object.keys(torches).length === 0 || torchesLit === 0
-			? undefined
-			: Object.keys(torches)
-					.filter((id) => torches[id].isLit)
-					.reduce((prev, curr) => (torches[prev].timeLeft < torches[curr].timeLeft ? prev : curr));
-
-	$: longestTorch =
-		Object.keys(torches).length === 0 || torchesLit === 0
-			? undefined
-			: Object.keys(torches)
-					.filter((id) => torches[id].isLit)
-					.reduce((prev, curr) => (torches[prev].timeLeft > torches[curr].timeLeft ? prev : curr));
-
-	$: blownOutTorches = Object.keys(torches).filter((id) => torches[id].timeLeft <= 0);
-
-	$: if (blownOutTorches.length > 0) {
-		fireAmbience.pause();
-		torchBlowout.play();
-		blownOutTorches.map((id) => deleteTorch(id));
-		blownOutTorches = [];
-		if (torchesLit != 0) {
-			fireAmbience.play();
+	$effect(() => {
+		if (AMBIENCE.fire && torchesLit === 0) {
+			AMBIENCE.fire.pause();
 		}
-	}
+	});
 </script>
 
 <div
@@ -101,18 +64,12 @@
 >
 	<Navbar />
 	{#if $activeView === 'ambient'}
-		<AmbientMode
-			bind:torches
-			bind:shortestTorch
-			bind:longestTorch
-			bind:torchesLit
-			on:addtorch={() => addTorch()}
-		/>
+		<AmbientMode bind:t {shortestTorch} {longestTorch} {torchesLit} />
 	{:else if $activeView === 'overview'}
-		<OverviewMode bind:torches on:add={addTorch} on:delete={handleDelete} />
+		<OverviewMode bind:t />
 	{:else}
-		<Settings bind:fireAmbience bind:torchBlowout />
+		<Settings />
 	{/if}
-	<audio src="fire-ambience.mp3" bind:this={fireAmbience} loop={true} ></audio>
-	<audio src="torch-blowout.mp3" bind:this={torchBlowout} ></audio>
+	<audio src="fire-ambience.mp3" bind:this={AMBIENCE.fire} loop={true} ></audio>
+	<audio src="torch-blowout.mp3" bind:this={AMBIENCE.blowout} ></audio>
 </div>

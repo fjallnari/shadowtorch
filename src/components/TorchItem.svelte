@@ -1,41 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type TorchInterface from '../interfaces/TorchInterface';
 	import IconButton from './IconButton.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
-	import { prettyTime } from '../util/util';
+	import type Torch from '../classes/Torch.svelte';
 
 	let {
 		torch = $bindable(),
 		deleteTorch
 	}: {
-		torch: Omit<TorchInterface, 'id'>;
+		torch: Torch;
 		deleteTorch: () => void;
 	} = $props();
-
-	const switchTorch = () => {
-		torch.isLit = !torch.isLit;
-
-		if (torch.isLit) {
-			lightTorch();
-		} else {
-			clearInterval(torch.intervalID);
-		}
-	};
-
-	function lightTorch() {
-		torch.intervalID = setInterval(() => {
-			torch.timeLeft -= 1;
-			if (torch.timeLeft === 0) {
-				clearInterval(torch.intervalID);
-				torch.isLit = false;
-			}
-		}, 1000);
-		// ! TODO
-		// if (fireAmbience.paused) {
-		// 	fireAmbience.play();
-		// }
-	}
 </script>
 
 <div
@@ -44,7 +18,7 @@
 >
 	<div class="row-span-2 col-span-2 flex justify-center items-center">
 		<h1 class="text-2xl {torch.isLit ? '' : 'animate-pulse'}">
-			{prettyTime(torch.timeLeft)}
+			{torch.prettyTime()}
 		</h1>
 	</div>
 	<div class="col-span-4 flex justify-center items-center">
@@ -64,7 +38,7 @@
 	<div class="row-span-2 col-span-2 flex justify-center gap-2 px-2 items-center text-xs">
 		<IconButton
 			icon={torch.isLit ? 'pixelarticons:pause' : 'pixelarticons:play'}
-			click={() => switchTorch()}
+			click={() => torch.switch()}
 		/>
 		<IconButton icon="pixelarticons:delete" click={() => deleteTorch()} />
 	</div>

@@ -1,62 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type TorchInterface from '../interfaces/TorchInterface';
 	import IconButton from './IconButton.svelte';
 	import TorchItem from './TorchItem.svelte';
+	import type Torches from '../classes/Torches.svelte';
+	import Torch from '../classes/Torch.svelte';
 
-	export let torches: Record<string, Omit<TorchInterface, 'id'>>;
+	let {
+		t = $bindable(),
+	}: {
+		t: Torches
+	} = $props();
 
-	const dispatch = createEventDispatcher();
-
-	const addTorch = () => {
-		dispatch('add');
-	};
-
-	const deleteTorch = (torchID: string) => {
-		if (!torchID) return;
-		dispatch('delete', {
-			id: torchID
-		});
-	};
-
-	const pauseAllTorches = () => {
-		if (Object.keys(torches).length === 0) return;
-		torches = Object.assign(
-			{},
-			...Object.keys(torches).map((idIter) => {
-				clearInterval(torches[idIter].intervalID);
-				return {
-					[idIter]: Object.assign(torches[idIter], {
-						isLit: false
-					})
-				};
-			})
-		);
-	};
-
-	const decrementRound = () => {
-		if (Object.keys(torches).length === 0) return;
-		torches = Object.assign(
-			{},
-			...Object.keys(torches).map((idIter) => ({
-				[idIter]: Object.assign(torches[idIter], {
-					timeLeft: torches[idIter].isLit
-						? torches[idIter].timeLeft - 600
-						: torches[idIter].timeLeft
-				})
-			}))
-		);
-	};
-
-	const sortTorches = () => {
-		if (Object.keys(torches).length === 0) return;
-		torches = Object.assign(
-			{},
-			...Object.keys(torches)
-				.sort((a, b) => torches[a].timeLeft - torches[b].timeLeft)
-				.map((idIter) => ({ [idIter]: torches[idIter] }))
-		);
-	};
 </script>
 
 <div class="row-span-6 col-span-full w-full h-full flex flex-col justify-start items-center gap-6">
@@ -67,21 +20,21 @@
 	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:plus" click={() => addTorch()} />
-			<IconButton icon="pixelarticons:pause" click={() => pauseAllTorches()} />
-			<IconButton icon="pixelarticons:sort" click={() => sortTorches()} />
-			<IconButton icon="pixelarticons:clock" click={() => decrementRound()} />
+			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch())} />
+			<IconButton icon="pixelarticons:pause" click={() => t.pauseAllTorches()} />
+			<IconButton icon="pixelarticons:sort" click={() => t.sortByTimeLeft()} />
+			<IconButton icon="pixelarticons:clock" click={() => t.decrementRound()} />
 		</div>
 	</div>
 	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full mb-4">
-		{#if Object.keys(torches).length === 0}
+		{#if Object.keys(t?.torches).length === 0}
 			<div class="">
 				<h1 class="text-3xl font-vt323 uppercase">No torches</h1>
 			</div>
-		{:else}
-			{#each Object.keys(torches) as torchID}
-				{#if torches[torchID] && torches[torchID].timeLeft > 0}
-					<TorchItem bind:torch={torches[torchID]} deleteTorch={() => deleteTorch(torchID)} />
+		{:else if t?.torches}
+			{#each Object.keys(t.torches) as torchID}
+				{#if t.torches[torchID] && t.torches[torchID].timeLeft > 0}
+					<TorchItem bind:torch={t.torches[torchID]} deleteTorch={() => t.deleteTorch(torchID)} />
 				{/if}
 			{/each}
 		{/if}
