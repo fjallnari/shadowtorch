@@ -66,7 +66,7 @@
 <div class="flex flex-col justify-evenly items-center row-span-3 col-span-full mb-2">
 	{#if shortestTorch}
 		<h1 class="font-vt323 text-2xl text-zinc-400">
-			<InPlaceEdit bind:value={t.torches[shortestTorch].name} on:submit={() => {}} />
+			<InPlaceEdit bind:value={t.torches[shortestTorch].name} />
 		</h1>
 	{:else}
 		<h1 class="text-3xl font-vt323">Add a torch</h1>

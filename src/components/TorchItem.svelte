@@ -23,7 +23,7 @@
 	</div>
 	<div class="col-span-4 flex justify-center items-center">
 		<h1 class="text-md">
-			<InPlaceEdit bind:value={torch.name} on:submit={() => {}} />
+			<InPlaceEdit bind:value={torch.name} />
 		</h1>
 	</div>
 	<div class="col-span-4 flex justify-center items-center">

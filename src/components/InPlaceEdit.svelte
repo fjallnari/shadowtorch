@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { getDefaultIfEmpty, isTextNonEmpty } from '../util/util';
+	import { Input } from "../components/input";
 
 	let { 
 		value = $bindable(),
-		required = true
-	}: { value: string, required?: boolean } = $props();
-	const defaultValue = '---';
+	}: { value: string } = $props();
 
-	let editing = $state(false);
+	const DEFAULT_VALUE = '---';
+	let editing: boolean = $state(false);
 	let original: string = $state(value);
-
-	const dispatch = createEventDispatcher();
 
 	onMount(() => {
 		original = value;
@@ -23,10 +21,6 @@
 	};
 
 	const submit = () => {
-		if (value !== original) {
-			dispatch('submit', value);
-		}
-
 		editing = false;
 	};
 
@@ -43,29 +37,24 @@
 			submit();
 		}
 	};
-
-	const focus = (element: any) => {
-		element.focus();
-	};
-
 </script>
 
 {#if editing}
-	<form on:submit|preventDefault={submit} on:keydown={keydown}>
-		<input
-			class="bg-inherit border-none border-r-4 outline outline-1 outline-accent-300 text-center"
+	<div class="flex justify-center items-center w-full">
+		<Input 
+			type="text" 
+			onblur={submit}
+			onkeydown={keydown}
+			variant="default"
 			bind:value
-			on:blur={submit}
-			{required}
-			use:focus
 		/>
-	</form>
+	</div>
 {:else}
 	<button
 		class="cursor-text border border-solid border-transparent {isTextNonEmpty(value) ? '' : ' placeholder'}"
-		on:click={() => edit()}
+		onclick={() => edit()}
 	>
-		{getDefaultIfEmpty(value, defaultValue)}
+		{getDefaultIfEmpty(value, DEFAULT_VALUE)}
 	</button>
 {/if}
 

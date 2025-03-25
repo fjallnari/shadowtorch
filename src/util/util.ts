@@ -1,4 +1,10 @@
 import type Theme from '../interfaces/Theme';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
 
 export const randomColor = () => {
 	return (
