@@ -2,13 +2,16 @@
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { getDefaultIfEmpty, isTextNonEmpty } from '../util/util';
 
-	export let value: any = '';
-	export let required = true;
-	export let defaultValue: string = '---';
+	let { 
+		value = $bindable(),
+		required = true
+	}: { value: string, required?: boolean } = $props();
+	const defaultValue = '---';
+
+	let editing = $state(false);
+	let original: string = $state(value);
 
 	const dispatch = createEventDispatcher();
-	let editing = false,
-		original: string;
 
 	onMount(() => {
 		original = value;
@@ -28,16 +31,23 @@
 	};
 
 	const keydown = (event: any) => {
+		// Cancel editing on escape
 		if (event.key == 'Escape') {
 			event.preventDefault();
 			value = original;
 			editing = false;
+		}
+		// submit on enter
+		if (event.key == 'Enter') {
+			event.preventDefault();
+			submit();
 		}
 	};
 
 	const focus = (element: any) => {
 		element.focus();
 	};
+
 </script>
 
 {#if editing}

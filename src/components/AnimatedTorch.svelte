@@ -3,12 +3,7 @@
 	import { THEMES } from '../util/themes';
 	import { colorTheme } from '../stores';
 
-	export let pos = { x: 0, y: 0 };
-
-	$: spritePath =
-		THEMES.find((theme) => theme.id === $colorTheme)?.spritePath ?? '_torch/sprites.png';
-
-	const names = [
+	const SPRITES = [
 		'T1011',
 		'T1012',
 		'T1013',
@@ -20,13 +15,21 @@
 		'T1019',
 		'T1020'
 	];
+	
+	let x = $state(0);
+	let y = $state(0);
+	let current = $state(0);
+	
 
-	let current = 0;
-	$: name = names[current];
+	let spritePath = $state(THEMES.find(
+		(theme) => theme.id === $colorTheme)?.spritePath ?? '_torch/sprites.png'
+	);
+
+	let name = $derived(SPRITES[current]);
 
 	onMount(() => {
 		const interval = setInterval(() => {
-			current = (current + 1) % names.length;
+			current = (current + 1) % SPRITES.length;
 		}, 100);
 
 		return () => clearInterval(interval);
@@ -35,8 +38,8 @@
 
 <div
 	data-sevenup="{name}.png"
-	style="transform: translate({pos.x}px,{pos.y}px); background-image: url({spritePath});"
-/>
+	style="transform: translate({x}px,{y}px); background-image: url({spritePath});"
+></div>
 
 <style>
 	[data-sevenup] {

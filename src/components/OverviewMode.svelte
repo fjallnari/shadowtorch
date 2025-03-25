@@ -13,6 +13,7 @@
 	};
 
 	const deleteTorch = (torchID: string) => {
+		if (!torchID) return;
 		dispatch('delete', {
 			id: torchID
 		});
@@ -66,10 +67,10 @@
 	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:plus" on:click={() => addTorch()} />
-			<IconButton icon="pixelarticons:pause" on:click={() => pauseAllTorches()} />
-			<IconButton icon="pixelarticons:sort" on:click={() => sortTorches()} />
-			<IconButton icon="pixelarticons:clock" on:click={() => decrementRound()} />
+			<IconButton icon="pixelarticons:plus" click={() => addTorch()} />
+			<IconButton icon="pixelarticons:pause" click={() => pauseAllTorches()} />
+			<IconButton icon="pixelarticons:sort" click={() => sortTorches()} />
+			<IconButton icon="pixelarticons:clock" click={() => decrementRound()} />
 		</div>
 	</div>
 	<div class="flex flex-row flex-wrap justify-center items-center gap-2 w-full mb-4">
@@ -80,7 +81,7 @@
 		{:else}
 			{#each Object.keys(torches) as torchID}
 				{#if torches[torchID] && torches[torchID].timeLeft > 0}
-					<TorchItem bind:torch={torches[torchID]} on:delete={() => deleteTorch(torchID)} />
+					<TorchItem bind:torch={torches[torchID]} deleteTorch={() => deleteTorch(torchID)} />
 				{/if}
 			{/each}
 		{/if}

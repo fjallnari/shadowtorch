@@ -67,7 +67,7 @@
 		</h1>
 	{:else}
 		<h1 class="text-3xl font-vt323">Add a torch</h1>
-		<IconButton icon="pixelarticons:plus" on:click={() => addTorch()} />
+		<IconButton icon="pixelarticons:plus" click={() => addTorch()} />
 	{/if}
 </div>
 <svelte:window bind:innerHeight={screenHeight} />

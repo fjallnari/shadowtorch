@@ -32,14 +32,14 @@
 		<div class="w-fit">
 			<IconButton
 				icon={$ambienceSoundEnabled ? '@custom:pixel:fire' : 'pixelarticons:volume-x'}
-				on:click={() => switchAmbienceSound()}
+				click={() => switchAmbienceSound()}
 			/>
 		</div>
 		<h1 class="text-2xl uppercase">fire ambience on/off</h1>
 		<div class="w-fit">
 			<IconButton
 				icon={$blowoutSoundEnabled ? 'pixelarticons:wind' : 'pixelarticons:volume-x'}
-				on:click={() => switchBlowoutSound()}
+				click={() => switchBlowoutSound()}
 			/>
 		</div>
 		<h1 class="text-2xl uppercase">blowout on/off</h1>
