@@ -4,11 +4,11 @@
         "source": "/",
         "has": [
             {
-            "type": "host",
-            "value": "shadowtorch.vercel.app"
+                "type": "host",
+                "value": "shadowtorch.vercel.app"
             }
         ],
-        "destination": "https://shadowtorch.fjallnari.com"
+        "destination": "https://shadowtorch.com"
         }
     ],
     "git": {
