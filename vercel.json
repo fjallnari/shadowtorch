@@ -1,14 +1,15 @@
 {
     "redirects": [
         {
-        "source": "/",
-        "has": [
-            {
-                "type": "host",
-                "value": "shadowtorch.vercel.app"
-            }
-        ],
-        "destination": "https://shadowtorch.com"
+            "source": "/",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "shadowtorch.vercel.app"
+                }
+            ],
+            "destination": "https://shadowtorch.com",
+            "permanent": true
         }
     ],
     "git": {
