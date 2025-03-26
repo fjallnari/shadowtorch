@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-	appId: 'shadowtorch',
+	appId: 'com.shadowtorch',
 	appName: 'Shadowtorch',
 	webDir: 'build',
 	server: {

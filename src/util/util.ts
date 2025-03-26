@@ -1,4 +1,10 @@
 import type Theme from '../interfaces/Theme';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
 
 export const randomColor = () => {
 	return (
@@ -15,15 +21,6 @@ export const isTextNonEmpty = (text: string) => {
 
 export const getDefaultIfEmpty = (text: string, defaultStr: string = '0') => {
 	return isTextNonEmpty(text) ? text : defaultStr;
-};
-
-export const secondsToMinutes = (seconds: number) => Math.floor(seconds / 60);
-export const padWithZeroes = (number: number) => number.toString().padStart(2, '0');
-
-export const prettyTime = (timeInSeconds: number) => {
-	const minutes = secondsToMinutes(timeInSeconds);
-	const remainingSeconds = timeInSeconds % 60;
-	return `${padWithZeroes(minutes)}:${padWithZeroes(remainingSeconds)}`;
 };
 
 export const cssVarTheme = (theme: Theme) =>

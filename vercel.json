@@ -1,0 +1,19 @@
+{
+    "redirects": [
+        {
+        "source": "/",
+        "has": [
+            {
+                "type": "host",
+                "value": "shadowtorch.vercel.app"
+            }
+        ],
+        "destination": "https://shadowtorch.com"
+        }
+    ],
+    "git": {
+        "deploymentEnabled": {
+            "main": false
+        }
+    }
+}

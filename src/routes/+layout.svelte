@@ -18,9 +18,11 @@
 
 <slot />
 
-<style lang="postcss">
+
+<style>
+	@import "tailwindcss/theme" theme;
 	:root {
-		background-color: theme(colors.stone.900);
-		color: theme(colors.zinc.100);
+		background-color: theme(--color-stone-900);
+		color: theme(--color-zinc-100);
 	}
 </style>

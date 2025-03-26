@@ -39,6 +39,9 @@ addCollection({
 		},
 		dashboard: {
 			body: '<path fill="currentColor" d="M3 3h8v10H3V3zm2 2v6h4V5H5zm8-2h8v6h-8V3zm2 2v2h4V5h-4zm-2 6h8v10h-8V11zm2 2v6h4v-6h-4zM3 15h8v6H3v-6zm2 2v2h4v-2H5z"/>'
+		},
+		wind: {
+			body: '<path fill="currentColor" d="M12 3H8v2h4v2H2v2h12V3h-2zm10 8V7h-6v2h4v2H2v2h20v-2zM2 17v-2h14v6h-6v-2h4v-2H2z">'
 		}
 	}
 });

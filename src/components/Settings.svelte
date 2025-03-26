@@ -1,27 +1,16 @@
 <script lang="ts">
+	import AMBIENCE from '../classes/Ambience.svelte';
 	import type Theme from '../interfaces/Theme';
-	import { blowoutSoundEnabled, ambienceSoundEnabled, colorTheme } from '../stores';
+	import { colorTheme } from '../stores';
 	import { THEMES } from '../util/themes';
 	import { cssVarTheme } from '../util/util';
 	import IconButton from './IconButton.svelte';
-
-	export let fireAmbience: HTMLAudioElement;
-	export let torchBlowout: HTMLAudioElement;
-
-	const switchAmbienceSound = () => {
-		ambienceSoundEnabled.set(!$ambienceSoundEnabled);
-		fireAmbience.muted = !$ambienceSoundEnabled;
-	};
-
-	const switchBlowoutSound = () => {
-		blowoutSoundEnabled.set(!$blowoutSoundEnabled);
-		torchBlowout.muted = !$blowoutSoundEnabled;
-	};
 
 	const selectTheme = (theme: Theme) => {
 		localStorage.theme = theme.id;
 		colorTheme.set(theme.id);
 	};
+
 </script>
 
 <div
@@ -31,15 +20,15 @@
 	<div class="flex flex-col md:flex-row justify-center items-center w-full gap-4">
 		<div class="w-fit">
 			<IconButton
-				icon={$ambienceSoundEnabled ? '@custom:pixel:fire' : 'pixelarticons:volume-x'}
-				on:click={() => switchAmbienceSound()}
+				icon={AMBIENCE.fireEnabled ? '@custom:pixel:fire' : 'pixelarticons:volume-x'}
+				click={() => AMBIENCE.switchFire()}
 			/>
 		</div>
 		<h1 class="text-2xl uppercase">fire ambience on/off</h1>
 		<div class="w-fit">
 			<IconButton
-				icon={$blowoutSoundEnabled ? 'pixelarticons:wind' : 'pixelarticons:volume-x'}
-				on:click={() => switchBlowoutSound()}
+				icon={AMBIENCE.blowoutEnabled ? 'pixelarticons:wind' : 'pixelarticons:volume-x'}
+				click={() => AMBIENCE.switchBlowout()}
 			/>
 		</div>
 		<h1 class="text-2xl uppercase">blowout on/off</h1>
@@ -48,12 +37,14 @@
 		<div class="grid grid-cols-3 gap-2">
 			{#each THEMES as theme}
 				<button
+					aria-label="theme-switch"
+					data-theme="minimalist"
 					class="w-10 h-10 p-1 bg-accent-300 {$colorTheme === theme.id
 						? 'bg-clip-content border-2 border-solid'
 						: ''}"
 					style={cssVarTheme(theme)}
 					on:click={() => selectTheme(theme)}
-				/>
+				></button>
 			{/each}
 		</div>
 		<h1 class="text-2xl uppercase">theme</h1>
