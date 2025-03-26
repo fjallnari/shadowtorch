@@ -2,11 +2,11 @@
 layer(base);
 @import "tailwindcss";
 
-/* 
-Uncomment if building static app for android/ios
-@font-face {
-    font-family: 'VT323';
-    src: url("./resources/VT323-Regular.ttf") format("truetype");
+
+/*?(ANDROID) Uncomment if building static app for android/ios */
+/* @font-face {
+  font-family: 'VT323';
+  src: url("/resources/VT323.ttf");
 } */
 
 @theme inline {
