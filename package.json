@@ -1,6 +1,6 @@
 {
 	"name": "shadowtorch",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@capawesome/capacitor-android-edge-to-edge-support": "^7.1.0",
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
 		"@tailwindcss/vite": "^4.0.15",
