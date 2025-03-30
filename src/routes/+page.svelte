@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
-	import { activeView, colorTheme } from '../stores';
+	import { activeView, colorTheme, currentTime } from '../stores';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
@@ -8,21 +8,15 @@
 	import { cssVarTheme } from '../util/util';
 	import Torches from '../classes/Torches.svelte';
 	import AMBIENCE from '../classes/Ambience.svelte';
-	import Timer from '../classes/Timer.svelte';
-	import pTimer from '../classes/TimerVariant.svelte';
+	import { timer } from '../classes/Timer.svelte';
+	import { onMount } from 'svelte';
 
-	const timer = new Timer();
-	timer.start();
-	let currentTime = $state(0);
-
-	var timerOne = pTimer.set(() => {
-		console.log(new Date().toString(), Date.now(), 'timerOne', timerOne);
-	}, 1000);
-
-	// setInterval(() => {
-	// 	currentTime = Math.round(timer.getTime() / 1000);
-	// 	console.log(currentTime);
-	// }, 100)
+	onMount(() => {
+		timer.start();
+		setInterval(() => {
+			$currentTime = Math.round(timer.getTime() / 1000);
+		}, 100)
+	})
 
 	let t = $state(new Torches());
 
@@ -78,7 +72,7 @@
 	style={cssVarTheme(THEMES.find((theme) => theme.id === $colorTheme) ?? THEMES[0])}
 >
 	<Navbar />
-	<div id="time">Current time: {currentTime}</div>
+	<div id="time">Current time: {$currentTime}</div>
 	{#if $activeView === 'ambient'}
 		<AmbientMode bind:t {shortestTorch} {longestTorch} {torchesLit} />
 	{:else if $activeView === 'overview'}

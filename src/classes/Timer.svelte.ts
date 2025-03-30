@@ -1,3 +1,4 @@
+// https://stackoverflow.com/a/57981688
 
 class Timer {
     public isRunning: boolean = $state(false);
@@ -60,4 +61,4 @@ class Timer {
     }
   }
 
-export default Timer;
+export const timer = new Timer();

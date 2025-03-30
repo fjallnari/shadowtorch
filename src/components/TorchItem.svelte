@@ -4,6 +4,7 @@
 	import type Torch from '../classes/Torch.svelte';
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc';
+	import { currentTime } from '../stores';
 
 	dayjs.extend(utc);
 
@@ -14,6 +15,7 @@
 		torch: Torch;
 		deleteTorch: () => void;
 	} = $props();
+
 </script>
 
 <div
@@ -22,7 +24,7 @@
 >
 	<div class="row-span-2 col-span-2 flex justify-center items-center">
 		<h1 class="text-2xl {torch.isLit ? '' : 'animate-pulse'}">
-			{torch.prettyTime()}
+			{torch.prettyTime($currentTime)}
 		</h1>
 	</div>
 	<div class="col-span-4 flex justify-center items-center">

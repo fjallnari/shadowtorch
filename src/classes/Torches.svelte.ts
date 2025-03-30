@@ -2,7 +2,6 @@ import AMBIENCE from "./Ambience.svelte";
 import Torch from "./Torch.svelte";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-
 dayjs.extend(utc);
 
 class Torches {
@@ -25,7 +24,9 @@ class Torches {
      */
     public pauseAllTorches = () => {
         for (const torch in this.torches) {
-            this.torches[torch].extinguish();
+            if (this.torches[torch].isLit) {
+                this.torches[torch].extinguish();
+            }
         }
     }
 

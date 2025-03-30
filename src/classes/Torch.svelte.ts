@@ -3,6 +3,8 @@ import type TorchInterface from "../interfaces/TorchInterface";
 import AMBIENCE from "./Ambience.svelte";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { timer } from "./Timer.svelte";
+
 dayjs.extend(utc);
 
 
@@ -10,9 +12,10 @@ class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
     public timeLeft: number = $state(3600);
+    public startTime: number = $state(0); // ! relative time to mounting the application
     public endTime?: dayjs.Dayjs = $state(undefined);
     public isLit: boolean = $state(false);
-    public intervalID?: NodeJS.Timeout | undefined = $state(undefined);
+    
 
     constructor() {
         this.id = nanoid(10);
@@ -21,14 +24,7 @@ class Torch implements TorchInterface {
 
     public lightUp = () => {
         this.endTime = dayjs().utc().add(this.timeLeft, 's');
-
-        this.intervalID = setInterval(() => {
-			this.timeLeft -= 1;
-			if (dayjs().utc().isAfter(this.endTime)) {
-				clearInterval(this.intervalID);
-				this.isLit = false;
-			}
-		}, 1000);
+        this.startTime = timer.getTime() / 1000;
 		this.isLit = true;
         
         if (AMBIENCE.fire?.paused) {
@@ -37,7 +33,7 @@ class Torch implements TorchInterface {
     }
 
     public extinguish = () => {
-        clearInterval(this.intervalID!);
+        this.timeLeft = this.endTime?.diff(dayjs().utc(), 's')!;
         this.isLit = false;
     }
 
@@ -47,16 +43,24 @@ class Torch implements TorchInterface {
 		if (this.isLit) {
 			this.lightUp();
 		} else {
-			clearInterval(this.intervalID);
+			this.extinguish();
 		}
 	};
 
     /**
      * @returns time left in a format of MM:SS
+     * Gets called every change of the timer
      */
-    public prettyTime = () => {
-        const minutes = this.secondsToMinutes(this.timeLeft);
-        const remainingSeconds = this.timeLeft % 60;
+    public prettyTime = (currentTime: number) => {
+        if (this.timeLeft === 0) {
+            this.extinguish();
+        }
+        
+        let displayTime = this.isLit ? 
+            this.timeLeft - (currentTime - this.startTime) : this.timeLeft;
+
+        const minutes = this.secondsToMinutes(displayTime);
+        const remainingSeconds = Math.floor(displayTime % 60);
         return `${this.padWithZeroes(minutes)}:${this.padWithZeroes(remainingSeconds)}`;
     }
 
