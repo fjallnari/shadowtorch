@@ -1,22 +1,30 @@
 import { nanoid } from "nanoid/non-secure";
 import type TorchInterface from "../interfaces/TorchInterface";
 import AMBIENCE from "./Ambience.svelte";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+
 
 class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
     public timeLeft: number = $state(3600);
+    public endTime?: dayjs.Dayjs = $state(undefined);
     public isLit: boolean = $state(false);
     public intervalID?: NodeJS.Timeout | undefined = $state(undefined);
 
     constructor() {
         this.id = nanoid(10);
+        this.endTime = dayjs().utc().add(1, 'h');
     }
 
     public lightUp = () => {
+        this.endTime = dayjs().utc().add(this.timeLeft, 's');
+
         this.intervalID = setInterval(() => {
 			this.timeLeft -= 1;
-			if (this.timeLeft === 0) {
+			if (dayjs().utc().isAfter(this.endTime)) {
 				clearInterval(this.intervalID);
 				this.isLit = false;
 			}

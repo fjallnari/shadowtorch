@@ -42,6 +42,7 @@
 		"@tailwindcss/vite": "^4.0.15",
 		"clsx": "^2.1.1",
 		"tailwind-merge": "^3.0.2",
-		"tailwind-variants": "^1.0.0"
+		"tailwind-variants": "^1.0.0",
+		"utc": "link:dayjs/plugin/utc"
 	}
 }

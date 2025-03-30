@@ -29,6 +29,9 @@ importers:
       tailwind-variants:
         specifier: ^1.0.0
         version: 1.0.0(tailwindcss@4.0.15)
+      utc:
+        specifier: link:dayjs/plugin/utc
+        version: link:dayjs/plugin/utc
     devDependencies:
       '@capacitor/android':
         specifier: ^7.1.0

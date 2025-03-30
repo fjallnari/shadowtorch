@@ -2,6 +2,10 @@
 	import IconButton from './IconButton.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import type Torch from '../classes/Torch.svelte';
+	import dayjs from 'dayjs';
+	import utc from 'dayjs/plugin/utc';
+
+	dayjs.extend(utc);
 
 	let {
 		torch = $bindable(),
@@ -32,6 +36,7 @@
 			id="time-range"
 			type="range"
 			max="3600"
+			onchange={() => (torch.endTime = dayjs().utc().add(torch.timeLeft, 's'))}
 			class="w-full h-2 bg-stone-700 rounded-none appearance-none cursor-pointer shadow-md"
 		/>
 	</div>

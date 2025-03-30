@@ -1,5 +1,9 @@
 import AMBIENCE from "./Ambience.svelte";
 import Torch from "./Torch.svelte";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 class Torches {
     public torches: Record<string, Torch> = $state({});
@@ -30,7 +34,14 @@ class Torches {
      */
     public decrementRound = () => {
         for (const torch in this.torches) {
-            this.torches[torch].timeLeft -= 600;
+            // if the torch is lit, decrement the time left by 10 minutes
+            const newTimeLeft = this.torches[torch].isLit ? 
+                this.torches[torch].timeLeft - 600 : this.torches[torch].timeLeft;
+            
+            
+            this.torches[torch].timeLeft = newTimeLeft;
+            this.torches[torch].endTime = dayjs().utc().add(newTimeLeft, 's')
+            
             if (this.torches[torch].timeLeft <= 0) {
                 this.deleteTorch(torch);
 
