@@ -11,11 +11,10 @@ dayjs.extend(utc);
 class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
-    public timeLeft: number = $state(3600);
+    public timeLeft: number = $state(5);
     public startTime: number = $state(0); // ! relative time to mounting the application
     public endTime?: dayjs.Dayjs = $state(undefined);
     public isLit: boolean = $state(false);
-    
 
     constructor() {
         this.id = nanoid(10);
@@ -52,10 +51,6 @@ class Torch implements TorchInterface {
      * Gets called every change of the timer
      */
     public prettyTime = (currentTime: number) => {
-        if (this.timeLeft === 0) {
-            this.extinguish();
-        }
-        
         let displayTime = this.isLit ? 
             this.timeLeft - (currentTime - this.startTime) : this.timeLeft;
 

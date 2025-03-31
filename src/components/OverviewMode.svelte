@@ -1,14 +1,8 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import TorchItem from './TorchItem.svelte';
-	import type Torches from '../classes/Torches.svelte';
 	import Torch from '../classes/Torch.svelte';
-
-	let {
-		t = $bindable(),
-	}: {
-		t: Torches
-	} = $props();
+	import { t } from '../classes/Torches.svelte';
 
 </script>
 
@@ -20,7 +14,7 @@
 	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch())} />
+			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch(), true)} />
 			<IconButton icon="pixelarticons:pause" click={() => t.pauseAllTorches()} />
 			<IconButton icon="pixelarticons:sort" click={() => t.sortByTimeLeft()} />
 			<IconButton icon="pixelarticons:clock" click={() => t.decrementRound()} />

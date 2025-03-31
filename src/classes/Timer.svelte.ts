@@ -1,5 +1,6 @@
-// https://stackoverflow.com/a/57981688
+// see https://stackoverflow.com/a/57981688
 
+// Should be used as a singleton
 class Timer {
     public isRunning: boolean = $state(false);
     public startTime: number = $state(0);
@@ -16,6 +17,7 @@ class Timer {
             return 0;
         }
 
+        // also possible to use performance.now()
         return Date.now() - this.startTime;
     }
 

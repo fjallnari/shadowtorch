@@ -2,17 +2,15 @@
 	import AnimatedTorch from './AnimatedTorch.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import IconButton from './IconButton.svelte';
-	import type Torches from '../classes/Torches.svelte';
 	import Torch from '../classes/Torch.svelte';
 	import { currentTime } from '../stores';
+	import { t } from '../classes/Torches.svelte';
 
 	let {
-		t = $bindable(),
 		torchesLit,
 		shortestTorch = "",
 		longestTorch
 	}: {
-		t: Torches;
 		torchesLit: number;
 		shortestTorch: string | undefined;
 		longestTorch: string | undefined;

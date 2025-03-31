@@ -6,10 +6,10 @@
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
 	import { cssVarTheme } from '../util/util';
-	import Torches from '../classes/Torches.svelte';
 	import AMBIENCE from '../classes/Ambience.svelte';
 	import { timer } from '../classes/Timer.svelte';
 	import { onMount } from 'svelte';
+	import { t } from '../classes/Torches.svelte';
 
 	onMount(() => {
 		timer.start();
@@ -17,8 +17,6 @@
 			$currentTime = Math.round(timer.getTime() / 1000);
 		}, 100)
 	})
-
-	let t = $state(new Torches());
 
 	let torchesLit = $derived(Object.keys(t.torches).filter((id) => t.torches[id].isLit).length);
 
@@ -44,27 +42,29 @@
 			.reduce((prev, curr) => (t.torches[prev].timeLeft > t.torches[curr].timeLeft ? prev : curr));
 	});
 
-	let blownOutTorches = $derived(Object.keys(t.torches).filter((id) => t.torches[id].timeLeft <= 0));
+	let blownOutTorches = $derived(Object.keys(t.torches).filter((id) => {
+		if (!t.torches[id].isLit) {
+			return false;
+		}
+		return t.torches[id].timeLeft - ($currentTime - t.torches[id].startTime) <= 0;
+	}));
 
 	$effect(() => {
 		if (blownOutTorches.length > 0) {
-			AMBIENCE.fire?.pause();
-			AMBIENCE.blowout?.play();
-
-			blownOutTorches.map((id) => t.deleteTorch(id));
-			blownOutTorches = [];
+			t.cleanUpTorches(blownOutTorches, $currentTime);
 
 			if (torchesLit != 0) {
 				AMBIENCE.fire?.play();
 			}
 		}
-	});
+	})
 
 	$effect(() => {
 		if (AMBIENCE.fire && torchesLit === 0) {
 			AMBIENCE.fire.pause();
 		}
 	});
+
 </script>
 
 <div
@@ -72,11 +72,10 @@
 	style={cssVarTheme(THEMES.find((theme) => theme.id === $colorTheme) ?? THEMES[0])}
 >
 	<Navbar />
-	<div id="time">Current time: {$currentTime}</div>
 	{#if $activeView === 'ambient'}
-		<AmbientMode bind:t {shortestTorch} {longestTorch} {torchesLit} />
+		<AmbientMode {shortestTorch} {longestTorch} {torchesLit} />
 	{:else if $activeView === 'overview'}
-		<OverviewMode bind:t />
+		<OverviewMode />
 	{:else}
 		<Settings />
 	{/if}

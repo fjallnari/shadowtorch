@@ -16,7 +16,13 @@ class Torches {
 
     public deleteTorch = (id: string) => {
         this.torches[id].extinguish();
-        delete this.torches[id];
+        //delete this.torches[id];
+        this.torches = Object.assign(
+            {},
+            ...Object.keys(this.torches)
+                .filter((idIter) => idIter !== id)
+                .map((idIter) => ({ [idIter]: this.torches[idIter] }))
+        )
     }
 
     /**
@@ -28,6 +34,25 @@ class Torches {
                 this.torches[torch].extinguish();
             }
         }
+    }
+    /**
+     * Cleans up torches that have been blown out
+     * @param blownOut array of torch ids that have been blown out
+     * @param currentTime current time in seconds
+     */
+    public cleanUpTorches = (blownOut: string[], currentTime: number) => {
+        blownOut.forEach((id) => {
+            if (this.torches[id].isLit) {
+                if (this.torches[id].timeLeft - (currentTime - this.torches[id].startTime)  <= 0) {
+                    this.torches[id].extinguish();
+                    this.deleteTorch(id);
+
+                    AMBIENCE.fire?.pause();
+                    AMBIENCE.blowout?.play();
+                }
+            }
+        })
+        
     }
 
     /**
@@ -42,7 +67,7 @@ class Torches {
             
             this.torches[torch].timeLeft = newTimeLeft;
             this.torches[torch].endTime = dayjs().utc().add(newTimeLeft, 's')
-            
+
             if (this.torches[torch].timeLeft <= 0) {
                 this.deleteTorch(torch);
 
@@ -69,4 +94,4 @@ class Torches {
     }
 }
 
-export default Torches;
+export const t = new Torches();
