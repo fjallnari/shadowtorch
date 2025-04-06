@@ -14,7 +14,7 @@
 	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch(), true)} />
+			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch(), false)} />
 			<IconButton icon="pixelarticons:pause" click={() => t.pauseAllTorches()} />
 			<IconButton icon="pixelarticons:sort" click={() => t.sortByTimeLeft()} />
 			<IconButton icon="pixelarticons:clock" click={() => t.decrementRound()} />

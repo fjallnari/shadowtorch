@@ -4,6 +4,7 @@ import AMBIENCE from "./Ambience.svelte";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { timer } from "./Timer.svelte";
+import { currentTime } from "../stores";
 
 dayjs.extend(utc);
 
@@ -32,17 +33,22 @@ class Torch implements TorchInterface {
     }
 
     public extinguish = () => {
-        this.timeLeft = this.endTime?.diff(dayjs().utc(), 's')!;
+        this.timeLeft = 0;
         this.isLit = false;
     }
 
-    public switch = () => {
+    public pause = (currentTime: number) => {
+        this.timeLeft = this.timeLeft - (currentTime - this.startTime);
+        this.isLit = false;
+    }
+
+    public switch = (currentTime: number) => {
 		this.isLit = !this.isLit;
 
 		if (this.isLit) {
 			this.lightUp();
 		} else {
-			this.extinguish();
+			this.pause(currentTime);
 		}
 	};
 

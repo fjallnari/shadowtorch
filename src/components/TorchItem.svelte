@@ -45,7 +45,7 @@
 	<div class="row-span-2 col-span-2 flex justify-center gap-2 px-2 items-center text-xs">
 		<IconButton
 			icon={torch.isLit ? 'pixelarticons:pause' : 'pixelarticons:play'}
-			click={() => torch.switch()}
+			click={() => torch.switch($currentTime)}
 		/>
 		<IconButton icon="pixelarticons:delete" click={() => deleteTorch()} />
 	</div>
