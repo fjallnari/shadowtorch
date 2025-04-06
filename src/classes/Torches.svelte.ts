@@ -16,7 +16,6 @@ class Torches {
 
     public deleteTorch = (id: string) => {
         this.torches[id].extinguish();
-        //delete this.torches[id];
         this.torches = Object.assign(
             {},
             ...Object.keys(this.torches)
@@ -28,10 +27,10 @@ class Torches {
     /**
      * Extinguishes all torches
      */
-    public pauseAllTorches = () => {
+    public pauseAllTorches = (currentTime: number) => {
         for (const torch in this.torches) {
             if (this.torches[torch].isLit) {
-                this.torches[torch].extinguish();
+                this.torches[torch].pause(currentTime);
             }
         }
     }
