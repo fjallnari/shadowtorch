@@ -11,7 +11,7 @@ dayjs.extend(utc);
 class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
-    public timeLeft: number = $state(5);
+    public timeLeft: number = $state(3600);
     public startTime: number = $state(0); // ! relative time to mounting the application
     public endTime?: dayjs.Dayjs = $state(undefined);
     public isLit: boolean = $state(false);
