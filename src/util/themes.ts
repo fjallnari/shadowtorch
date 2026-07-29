@@ -44,8 +44,8 @@ export const THEMES: Theme[] = [
 		'--clr-accent-950': '#2d1f48'
 	},
 	{
-		id: 'murky-gray',
-		spritePath: '_torch/sprites-murky-gray.png',
+		id: 'snow',
+		spritePath: '_torch/sprites-snow.png',
 		'--clr-accent-300': '#d1d5db',
 		'--clr-accent-500': '#aea69d',
 		'--clr-accent-950': '#262626'
