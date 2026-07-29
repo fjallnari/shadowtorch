@@ -14,8 +14,19 @@
 	onMount(() => {
 		timer.start();
 		setInterval(() => {
-			$currentTime = Math.round(timer.getTime() / 1000);
-		}, 100)
+			const now = Math.round(timer.getTime() / 1000);
+			$currentTime = now;
+
+			const blownOut = Object.keys(t.torches).filter((id) =>
+				t.torches[id].isLit
+					? t.torches[id].timeLeft - (now - t.torches[id].startTime) <= 0
+					: t.torches[id].timeLeft <= 0
+			);
+			if (blownOut.length > 0) {
+				t.cleanUpTorches(blownOut, now);
+				if (Object.keys(t.torches).some((id) => t.torches[id].isLit)) AMBIENCE.fire?.play();
+			}
+		}, 100);
 	})
 
 	let torchesLit = $derived(Object.keys(t.torches).filter((id) => t.torches[id].isLit).length);
@@ -41,23 +52,6 @@
 			.filter((id) => t.torches[id].isLit)
 			.reduce((prev, curr) => (t.torches[prev].timeLeft > t.torches[curr].timeLeft ? prev : curr));
 	});
-
-	let blownOutTorches = $derived(Object.keys(t.torches).filter((id) => {
-		if (!t.torches[id].isLit) {
-			return false;
-		}
-		return t.torches[id].timeLeft - ($currentTime - t.torches[id].startTime) <= 0;
-	}));
-
-	$effect(() => {
-		if (blownOutTorches.length > 0) {
-			t.cleanUpTorches(blownOutTorches, $currentTime);
-
-			if (torchesLit != 0) {
-				AMBIENCE.fire?.play();
-			}
-		}
-	})
 
 	$effect(() => {
 		if (AMBIENCE.fire && torchesLit === 0) {

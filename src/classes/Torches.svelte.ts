@@ -1,8 +1,5 @@
 import AMBIENCE from "./Ambience.svelte";
 import Torch from "./Torch.svelte";
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
 
 class Torches {
     public torches: Record<string, Torch> = $state({});
@@ -16,12 +13,7 @@ class Torches {
 
     public deleteTorch = (id: string) => {
         this.torches[id].extinguish();
-        this.torches = Object.assign(
-            {},
-            ...Object.keys(this.torches)
-                .filter((idIter) => idIter !== id)
-                .map((idIter) => ({ [idIter]: this.torches[idIter] }))
-        )
+        delete this.torches[id];
     }
 
     /**
@@ -40,18 +32,22 @@ class Torches {
      * @param currentTime current time in seconds
      */
     public cleanUpTorches = (blownOut: string[], currentTime: number) => {
+        let didBlowOut = false;
         blownOut.forEach((id) => {
-            if (this.torches[id].isLit) {
-                if (this.torches[id].timeLeft - (currentTime - this.torches[id].startTime)  <= 0) {
-                    this.torches[id].extinguish();
-                    this.deleteTorch(id);
-
-                    AMBIENCE.fire?.pause();
-                    AMBIENCE.blowout?.play();
-                }
+            const torch = this.torches[id];
+            if (!torch) return;
+            const expired = torch.isLit
+                ? torch.timeLeft - (currentTime - torch.startTime) <= 0
+                : torch.timeLeft <= 0;
+            if (expired) {
+                this.deleteTorch(id);
+                didBlowOut = true;
             }
-        })
-        
+        });
+        if (didBlowOut) {
+            AMBIENCE.fire?.pause();
+            AMBIENCE.blowout?.play();
+        }
     }
 
     /**
@@ -65,7 +61,6 @@ class Torches {
             
             
             this.torches[torch].timeLeft = newTimeLeft;
-            this.torches[torch].endTime = dayjs().utc().add(newTimeLeft, 's')
 
             if (this.torches[torch].timeLeft <= 0) {
                 this.deleteTorch(torch);

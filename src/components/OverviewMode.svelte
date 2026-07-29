@@ -27,7 +27,7 @@
 				<h1 class="text-3xl font-vt323 uppercase">No torches</h1>
 			</div>
 		{:else if t?.torches}
-			{#each Object.keys(t.torches) as torchID}
+			{#each Object.keys(t.torches) as torchID (torchID)}
 				{#if t.torches[torchID] && t.torches[torchID].timeLeft > 0}
 					<TorchItem bind:torch={t.torches[torchID]} deleteTorch={() => t.deleteTorch(torchID)} />
 				{/if}
