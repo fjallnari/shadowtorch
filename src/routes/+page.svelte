@@ -17,11 +17,7 @@
 			const now = Math.round(timer.getTime() / 1000);
 			$currentTime = now;
 
-			const blownOut = Object.keys(t.torches).filter((id) =>
-				t.torches[id].isLit
-					? t.torches[id].timeLeft - (now - t.torches[id].startTime) <= 0
-					: t.torches[id].timeLeft <= 0
-			);
+			const blownOut = t.getExpired(now);
 			if (blownOut.length > 0) {
 				t.cleanUpTorches(blownOut, now);
 				if (Object.keys(t.torches).some((id) => t.torches[id].isLit)) AMBIENCE.fire?.play();

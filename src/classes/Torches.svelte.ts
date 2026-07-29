@@ -1,7 +1,7 @@
 import AMBIENCE from "./Ambience.svelte";
 import Torch from "./Torch.svelte";
 
-class Torches {
+export class Torches {
     public torches: Record<string, Torch> = $state({});
 
     public addTorch = (torch: Torch, litFromStart: boolean = false) => {
@@ -26,6 +26,21 @@ class Torches {
             }
         }
     }
+    
+    /**
+     * Returns the ids of torches that have expired: lit torches whose remaining
+     * time has run out, plus any unlit torches left at 0 (defensive cleanup).
+     * @param currentTime current time in seconds
+     */
+    public getExpired = (currentTime: number): string[] =>
+        Object.keys(this.torches).filter((id) => {
+            const torch = this.torches[id];
+            if (!torch) return false;
+            return torch.isLit
+                ? torch.timeLeft - (currentTime - torch.startTime) <= 0
+                : torch.timeLeft <= 0;
+        });
+
     /**
      * Cleans up torches that have been blown out
      * @param blownOut array of torch ids that have been blown out
