@@ -15,6 +15,11 @@ Or use the Dockerfile to build and run the app. \
 ```docker build -t shadowtorch .``` \
 ```docker run --rm -p 3000:3000 shadowtorch```
 
+### Android build
+
+```pnpm run build:android``` builds the web app and syncs it into the Capacitor Android project. \
+Then from `android/`: ```./gradlew assembleDebug``` for a debug APK, or ```./gradlew assembleRelease``` for a signed release build. \
+
 ### Credits
 
 **Animated torch** was made by [NYKNCK](https://nyknck.itch.io/). \
