@@ -1,13 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap')
-layer(base);
+@import "virtual:vt323-font";
 @import "tailwindcss";
-
-
-/*?(ANDROID) Uncomment if building static app for android/ios */
-/* @font-face {
-  font-family: 'VT323';
-  src: url("/resources/VT323.ttf");
-} */
 
 @theme inline {
   --font-vt323: VT323, serif;
