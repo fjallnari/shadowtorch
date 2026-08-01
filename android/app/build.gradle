@@ -30,6 +30,14 @@ repositories {
     }
 }
 
+configurations.all {
+    // androidx.lifecycle:lifecycle-common:2.6.2 pulls in kotlinx-coroutines-android:1.6.4, which still
+    // depends on the pre-1.8 split kotlin-stdlib-jdk7/jdk8 artifacts. Their contents were merged into
+    // kotlin-stdlib itself in Kotlin 1.8, so keeping them around just duplicates classes at dex time.
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
