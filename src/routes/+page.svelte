@@ -5,8 +5,9 @@
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
-	import { cssVarTheme } from '../util/util';
+	import { cssVarTheme, hexToRgb } from '../util/util';
 	import AMBIENCE from '../classes/Ambience.svelte';
+	import LIGHTS from '../classes/Lights.svelte';
 	import { timer } from '../classes/Timer.svelte';
 	import { onMount } from 'svelte';
 	import { t } from '../classes/Torches.svelte';
@@ -53,6 +54,43 @@
 		if (AMBIENCE.fire && torchesLit === 0) {
 			AMBIENCE.fire.pause();
 		}
+	});
+
+
+	// bucketed brightness of the longest torch
+	// goes dark once the last torch burns out
+	let prevLit = 0;
+	let prevBucket = -1;
+	let prevThemeId: string | null = null;
+	const DIM_THRESHOLD = 600; // seconds — start dimming in the last 10 minutes
+	const brightnessBucket = (remaining: number) => {
+		if (remaining >= DIM_THRESHOLD) return 100;
+		const b = Math.round(((remaining / DIM_THRESHOLD) * 100) / 10) * 10;
+		return Math.max(10, Math.min(100, b));
+	};
+	$effect(() => {
+		if (!LIGHTS.enabled) {
+			prevLit = torchesLit;
+			return;
+		}
+		const currLit = torchesLit;
+		if (currLit === 0 && prevLit > 0) {
+			LIGHTS.turnOff();
+			prevBucket = -1;
+			prevThemeId = null;
+		} else if (currLit > 0) {
+			const themeId = $colorTheme;
+			const theme = THEMES.find((th) => th.id === themeId) ?? THEMES[0];
+			const torch = longestTorch ? t.torches[longestTorch] : undefined;
+			const remaining = torch ? torch.timeLeft - ($currentTime - torch.startTime) : 0;
+			const bucket = brightnessBucket(Math.max(0, remaining));
+			if (prevLit === 0 || bucket !== prevBucket || themeId !== prevThemeId) {
+				LIGHTS.turnOn(bucket, hexToRgb(theme['--clr-accent-500']));
+				prevBucket = bucket;
+				prevThemeId = themeId;
+			}
+		}
+		prevLit = currLit;
 	});
 
 </script>
