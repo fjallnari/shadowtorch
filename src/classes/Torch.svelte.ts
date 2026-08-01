@@ -1,26 +1,22 @@
 import { nanoid } from "nanoid/non-secure";
 import type TorchInterface from "../interfaces/TorchInterface";
 import AMBIENCE from "./Ambience.svelte";
+import { timer } from "./Timer.svelte";
+
 
 class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
     public timeLeft: number = $state(3600);
+    public startTime: number = $state(0); // ! relative time to mounting the application
     public isLit: boolean = $state(false);
-    public intervalID?: NodeJS.Timeout | undefined = $state(undefined);
 
     constructor() {
         this.id = nanoid(10);
     }
 
     public lightUp = () => {
-        this.intervalID = setInterval(() => {
-			this.timeLeft -= 1;
-			if (this.timeLeft === 0) {
-				clearInterval(this.intervalID);
-				this.isLit = false;
-			}
-		}, 1000);
+        this.startTime = Math.round(timer.getTime() / 1000);
 		this.isLit = true;
         
         if (AMBIENCE.fire?.paused) {
@@ -29,26 +25,35 @@ class Torch implements TorchInterface {
     }
 
     public extinguish = () => {
-        clearInterval(this.intervalID!);
+        this.timeLeft = 0;
         this.isLit = false;
     }
 
-    public switch = () => {
+    public pause = (currentTime: number) => {
+        this.timeLeft = this.timeLeft - (currentTime - this.startTime);
+        this.isLit = false;
+    }
+
+    public switch = (currentTime: number) => {
 		this.isLit = !this.isLit;
 
 		if (this.isLit) {
 			this.lightUp();
 		} else {
-			clearInterval(this.intervalID);
+			this.pause(currentTime);
 		}
 	};
 
     /**
      * @returns time left in a format of MM:SS
+     * Gets called every change of the timer
      */
-    public prettyTime = () => {
-        const minutes = this.secondsToMinutes(this.timeLeft);
-        const remainingSeconds = this.timeLeft % 60;
+    public prettyTime = (currentTime: number) => {
+        let displayTime = this.isLit ? 
+            this.timeLeft - (currentTime - this.startTime) : this.timeLeft;
+
+        const minutes = this.secondsToMinutes(displayTime);
+        const remainingSeconds = Math.floor(displayTime % 60);
         return `${this.padWithZeroes(minutes)}:${this.padWithZeroes(remainingSeconds)}`;
     }
 

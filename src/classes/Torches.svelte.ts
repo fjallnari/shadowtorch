@@ -1,7 +1,7 @@
 import AMBIENCE from "./Ambience.svelte";
 import Torch from "./Torch.svelte";
 
-class Torches {
+export class Torches {
     public torches: Record<string, Torch> = $state({});
 
     public addTorch = (torch: Torch, litFromStart: boolean = false) => {
@@ -19,9 +19,49 @@ class Torches {
     /**
      * Extinguishes all torches
      */
-    public pauseAllTorches = () => {
+    public pauseAllTorches = (currentTime: number) => {
         for (const torch in this.torches) {
-            this.torches[torch].extinguish();
+            if (this.torches[torch].isLit) {
+                this.torches[torch].pause(currentTime);
+            }
+        }
+    }
+    
+    /**
+     * Returns the ids of torches that have expired: lit torches whose remaining
+     * time has run out, plus any unlit torches left at 0 (defensive cleanup).
+     * @param currentTime current time in seconds
+     */
+    public getExpired = (currentTime: number): string[] =>
+        Object.keys(this.torches).filter((id) => {
+            const torch = this.torches[id];
+            if (!torch) return false;
+            return torch.isLit
+                ? torch.timeLeft - (currentTime - torch.startTime) <= 0
+                : torch.timeLeft <= 0;
+        });
+
+    /**
+     * Cleans up torches that have been blown out
+     * @param blownOut array of torch ids that have been blown out
+     * @param currentTime current time in seconds
+     */
+    public cleanUpTorches = (blownOut: string[], currentTime: number) => {
+        let didBlowOut = false;
+        blownOut.forEach((id) => {
+            const torch = this.torches[id];
+            if (!torch) return;
+            const expired = torch.isLit
+                ? torch.timeLeft - (currentTime - torch.startTime) <= 0
+                : torch.timeLeft <= 0;
+            if (expired) {
+                this.deleteTorch(id);
+                didBlowOut = true;
+            }
+        });
+        if (didBlowOut) {
+            AMBIENCE.fire?.pause();
+            AMBIENCE.blowout?.play();
         }
     }
 
@@ -30,7 +70,13 @@ class Torches {
      */
     public decrementRound = () => {
         for (const torch in this.torches) {
-            this.torches[torch].timeLeft -= 600;
+            // if the torch is lit, decrement the time left by 10 minutes
+            const newTimeLeft = this.torches[torch].isLit ? 
+                this.torches[torch].timeLeft - 600 : this.torches[torch].timeLeft;
+            
+            
+            this.torches[torch].timeLeft = newTimeLeft;
+
             if (this.torches[torch].timeLeft <= 0) {
                 this.deleteTorch(torch);
 
@@ -57,4 +103,4 @@ class Torches {
     }
 }
 
-export default Torches;
+export const t = new Torches();

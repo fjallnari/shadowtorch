@@ -2,16 +2,15 @@
 	import AnimatedTorch from './AnimatedTorch.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import IconButton from './IconButton.svelte';
-	import type Torches from '../classes/Torches.svelte';
 	import Torch from '../classes/Torch.svelte';
+	import { currentTime } from '../stores';
+	import { t } from '../classes/Torches.svelte';
 
 	let {
-		t = $bindable(),
 		torchesLit,
 		shortestTorch = "",
 		longestTorch
 	}: {
-		t: Torches;
 		torchesLit: number;
 		shortestTorch: string | undefined;
 		longestTorch: string | undefined;
@@ -34,7 +33,7 @@
 			? 'animate-pulse'
 			: ''}"
 	>
-		{t.torches[shortestTorch] ? t.torches[shortestTorch]?.prettyTime()
+		{t.torches[shortestTorch] ? t.torches[shortestTorch]?.prettyTime($currentTime)
 		: Object.keys(t.torches).length === 0 ? 'No torches': 'No torches lit'}
 	</h1>
 	{#if torchesLit - 1 > 0}
@@ -49,7 +48,7 @@
 	{/if}
 	{#if longestTorch}
 		<h1 class="text-xl font-vt323 text-zinc-400">
-			Darkness in {t.torches[longestTorch]?.prettyTime()}
+			Darkness in {t.torches[longestTorch]?.prettyTime($currentTime)}
 		</h1>
 	{/if}
 </div>

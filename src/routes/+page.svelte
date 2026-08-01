@@ -1,15 +1,29 @@
 <script lang="ts">
 	import Navbar from '../components/Navbar.svelte';
-	import { activeView, colorTheme } from '../stores';
+	import { activeView, colorTheme, currentTime } from '../stores';
 	import AmbientMode from '../components/AmbientMode.svelte';
 	import OverviewMode from '../components/OverviewMode.svelte';
 	import Settings from '../components/Settings.svelte';
 	import { THEMES } from '../util/themes';
 	import { cssVarTheme } from '../util/util';
-	import Torches from '../classes/Torches.svelte';
 	import AMBIENCE from '../classes/Ambience.svelte';
+	import { timer } from '../classes/Timer.svelte';
+	import { onMount } from 'svelte';
+	import { t } from '../classes/Torches.svelte';
 
-	let t = $state(new Torches());
+	onMount(() => {
+		timer.start();
+		setInterval(() => {
+			const now = Math.round(timer.getTime() / 1000);
+			$currentTime = now;
+
+			const blownOut = t.getExpired(now);
+			if (blownOut.length > 0) {
+				t.cleanUpTorches(blownOut, now);
+				if (Object.keys(t.torches).some((id) => t.torches[id].isLit)) AMBIENCE.fire?.play();
+			}
+		}, 100);
+	})
 
 	let torchesLit = $derived(Object.keys(t.torches).filter((id) => t.torches[id].isLit).length);
 
@@ -35,27 +49,12 @@
 			.reduce((prev, curr) => (t.torches[prev].timeLeft > t.torches[curr].timeLeft ? prev : curr));
 	});
 
-	let blownOutTorches = $derived(Object.keys(t.torches).filter((id) => t.torches[id].timeLeft <= 0));
-
-	$effect(() => {
-		if (blownOutTorches.length > 0) {
-			AMBIENCE.fire?.pause();
-			AMBIENCE.blowout?.play();
-
-			blownOutTorches.map((id) => t.deleteTorch(id));
-			blownOutTorches = [];
-
-			if (torchesLit != 0) {
-				AMBIENCE.fire?.play();
-			}
-		}
-	});
-
 	$effect(() => {
 		if (AMBIENCE.fire && torchesLit === 0) {
 			AMBIENCE.fire.pause();
 		}
 	});
+
 </script>
 
 <div
@@ -64,9 +63,9 @@
 >
 	<Navbar />
 	{#if $activeView === 'ambient'}
-		<AmbientMode bind:t {shortestTorch} {longestTorch} {torchesLit} />
+		<AmbientMode {shortestTorch} {longestTorch} {torchesLit} />
 	{:else if $activeView === 'overview'}
-		<OverviewMode bind:t />
+		<OverviewMode />
 	{:else}
 		<Settings />
 	{/if}

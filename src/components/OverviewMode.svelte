@@ -1,14 +1,9 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import TorchItem from './TorchItem.svelte';
-	import type Torches from '../classes/Torches.svelte';
 	import Torch from '../classes/Torch.svelte';
-
-	let {
-		t = $bindable(),
-	}: {
-		t: Torches
-	} = $props();
+	import { t } from '../classes/Torches.svelte';
+	import { currentTime } from '../stores';
 
 </script>
 
@@ -20,8 +15,8 @@
 	</div>
 	<div class="flex justify-center items-center col-span-full">
 		<div class="flex justify-center items-center w-16 gap-4">
-			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch())} />
-			<IconButton icon="pixelarticons:pause" click={() => t.pauseAllTorches()} />
+			<IconButton icon="pixelarticons:plus" click={() => t.addTorch(new Torch(), false)} />
+			<IconButton icon="pixelarticons:pause" click={() => t.pauseAllTorches($currentTime)} />
 			<IconButton icon="pixelarticons:sort" click={() => t.sortByTimeLeft()} />
 			<IconButton icon="pixelarticons:clock" click={() => t.decrementRound()} />
 		</div>
@@ -32,7 +27,7 @@
 				<h1 class="text-3xl font-vt323 uppercase">No torches</h1>
 			</div>
 		{:else if t?.torches}
-			{#each Object.keys(t.torches) as torchID}
+			{#each Object.keys(t.torches) as torchID (torchID)}
 				{#if t.torches[torchID] && t.torches[torchID].timeLeft > 0}
 					<TorchItem bind:torch={t.torches[torchID]} deleteTorch={() => t.deleteTorch(torchID)} />
 				{/if}

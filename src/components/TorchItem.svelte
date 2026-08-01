@@ -2,6 +2,7 @@
 	import IconButton from './IconButton.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import type Torch from '../classes/Torch.svelte';
+	import { currentTime } from '../stores';
 
 	let {
 		torch = $bindable(),
@@ -10,6 +11,33 @@
 		torch: Torch;
 		deleteTorch: () => void;
 	} = $props();
+
+	let liveRemaining = $derived(
+		torch.isLit ? torch.timeLeft - ($currentTime - torch.startTime) : torch.timeLeft
+	);
+	let dragValue: number | null = $state(null);
+
+	const onInput = (event: Event) => {
+		dragValue = Number((event.currentTarget as HTMLInputElement).value);
+	};
+
+	const onChange = (event: Event) => {
+		const v = Number((event.currentTarget as HTMLInputElement).value);
+		if (v <= 0) {
+			deleteTorch();
+			dragValue = null;
+			return;
+		}
+		torch.timeLeft = v;
+		torch.startTime = $currentTime;
+		dragValue = null;
+	};
+
+	const formatTime = (seconds: number) => {
+		const m = Math.floor(seconds / 60);
+		const s = Math.floor(seconds % 60);
+		return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+	};
 </script>
 
 <div
@@ -18,7 +46,7 @@
 >
 	<div class="row-span-2 col-span-2 flex justify-center items-center">
 		<h1 class="text-2xl {torch.isLit ? '' : 'animate-pulse'}">
-			{torch.prettyTime()}
+			{dragValue !== null ? formatTime(dragValue) : torch.prettyTime($currentTime)}
 		</h1>
 	</div>
 	<div class="col-span-4 flex justify-center items-center">
@@ -28,17 +56,20 @@
 	</div>
 	<div class="col-span-4 flex justify-center items-center">
 		<input
-			bind:value={torch.timeLeft}
 			id="time-range"
 			type="range"
+			min="0"
 			max="3600"
+			value={dragValue ?? liveRemaining}
+			oninput={onInput}
+			onchange={onChange}
 			class="w-full h-2 bg-stone-700 rounded-none appearance-none cursor-pointer shadow-md"
 		/>
 	</div>
 	<div class="row-span-2 col-span-2 flex justify-center gap-2 px-2 items-center text-xs">
 		<IconButton
 			icon={torch.isLit ? 'pixelarticons:pause' : 'pixelarticons:play'}
-			click={() => torch.switch()}
+			click={() => torch.switch($currentTime)}
 		/>
 		<IconButton icon="pixelarticons:delete" click={() => deleteTorch()} />
 	</div>
