@@ -50,7 +50,7 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            outputFileName = "shadowtorch-${variant.versionName}-${variant.buildType.name}.apk"
+            outputFileName = "shadowtorch-${variant.versionName}.apk"
         }
     }
 }
