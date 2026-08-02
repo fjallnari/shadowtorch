@@ -1,0 +1,11 @@
+services:
+  shadowtorch:
+    build:
+      context: .
+      args:
+        LIGHTS_ENABLED: ${LIGHTS_ENABLED:-false}
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    restart: unless-stopped
