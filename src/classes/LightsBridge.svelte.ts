@@ -18,10 +18,17 @@ let now = $state(0);
 currentTime.subscribe((v) => (now = v));
 
 const DIM_THRESHOLD = 600; // seconds — start dimming in the last 10 minutes
+const DIM_FLOOR = 25; // brightness % floor reached at DIM_THRESHOLD, before the final countdown
+const FINAL_COUNTDOWN = 10; // seconds — count down from DIM_FLOOR to 0, ticking every second
 const brightnessBucket = (remaining: number) => {
 	if (remaining >= DIM_THRESHOLD) return 100;
-	const b = Math.round(((remaining / DIM_THRESHOLD) * 100) / 10) * 10;
-	return Math.max(10, Math.min(100, b));
+	if (remaining <= FINAL_COUNTDOWN) {
+		return Math.round((remaining / FINAL_COUNTDOWN) * DIM_FLOOR);
+	}
+	// ramp 100 -> DIM_FLOOR over the dimming window, bucketed in steps of 5 so HA isn't hit per tick
+	const span = DIM_THRESHOLD - FINAL_COUNTDOWN;
+	const pct = DIM_FLOOR + ((remaining - FINAL_COUNTDOWN) / span) * (100 - DIM_FLOOR);
+	return Math.max(DIM_FLOOR, Math.round(pct / 5) * 5);
 };
 
 let prevLit = 0;
