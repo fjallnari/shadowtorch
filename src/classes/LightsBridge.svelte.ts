@@ -19,7 +19,7 @@ currentTime.subscribe((v) => (now = v));
 
 const DIM_THRESHOLD = 600; // seconds — start dimming in the last 10 minutes
 const DIM_FLOOR = 25; // brightness % floor reached at DIM_THRESHOLD, before the final countdown
-const FINAL_COUNTDOWN = 10; // seconds — count down from DIM_FLOOR to 0, ticking every second
+const FINAL_COUNTDOWN = 30; // seconds — count down from DIM_FLOOR to 0, ticking every second
 const brightnessBucket = (remaining: number) => {
 	if (remaining >= DIM_THRESHOLD) return 100;
 	if (remaining <= FINAL_COUNTDOWN) {
@@ -51,14 +51,14 @@ $effect.root(() => {
 			prevThemeId = null;
 		} else if (currLit > 0) {
 			const theme = THEMES.find((th) => th.id === themeId) ?? THEMES[0];
+			const remainingOf = (id: string) => torches[id].timeLeft - (now - torches[id].startTime);
 			const longestId = litIds.reduce((prev, curr) =>
-				torches[prev].timeLeft > torches[curr].timeLeft ? prev : curr
+				remainingOf(prev) > remainingOf(curr) ? prev : curr
 			);
-			const torch = torches[longestId];
-			const remaining = torch.timeLeft - (now - torch.startTime);
+			const remaining = remainingOf(longestId);
 			const bucket = brightnessBucket(Math.max(0, remaining));
 			if (prevLit === 0 || bucket !== prevBucket || themeId !== prevThemeId) {
-				LIGHTS.turnOn(bucket, hexToRgb(theme['--clr-accent-500']));
+				LIGHTS.turnOn(bucket, hexToRgb(theme['--clr-accent-300']));
 				prevBucket = bucket;
 				prevThemeId = themeId;
 			}
