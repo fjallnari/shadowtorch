@@ -1,6 +1,7 @@
 <script lang="ts">
 	import AMBIENCE from '../classes/Ambience.svelte';
 	import LIGHTS from '../classes/Lights.svelte';
+	import TORCH_SETTINGS from '../classes/TorchSettings.svelte';
 	import type Theme from '../interfaces/Theme';
 	import { colorTheme } from '../stores';
 	import { THEMES } from '../util/themes';
@@ -37,6 +38,13 @@
 			/>
 		</div>
 		<h1 class="text-2xl uppercase">blowout on/off</h1>
+		<div class="w-fit">
+			<IconButton
+				icon={TORCH_SETTINGS.blitzMode ? 'pixelarticons:zap' : 'pixelarticons:zap-off'}
+				click={() => (TORCH_SETTINGS.blitzMode = !TORCH_SETTINGS.blitzMode)}
+			/>
+		</div>
+		<h1 class="text-2xl uppercase">blitz mode on/off (30/60 min)</h1>
 	</div>
 	{#if LIGHTS.enabled}
 		<div class="flex flex-col justify-center items-center w-11/12 gap-4">

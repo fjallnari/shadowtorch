@@ -2,17 +2,19 @@ import { nanoid } from "nanoid/non-secure";
 import type TorchInterface from "../interfaces/TorchInterface";
 import AMBIENCE from "./Ambience.svelte";
 import { timer } from "./Timer.svelte";
+import TORCH_SETTINGS from "./TorchSettings.svelte";
 
 
 class Torch implements TorchInterface {
     public id: string = $state("");
     public name: string = $state("");
-    public timeLeft: number = $state(3600);
+    public timeLeft: number = $state(0);
     public startTime: number = $state(0); // ! relative time to mounting the application
     public isLit: boolean = $state(false);
 
     constructor() {
         this.id = nanoid(10);
+        this.timeLeft = TORCH_SETTINGS.maxSeconds;
     }
 
     public lightUp = () => {
