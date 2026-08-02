@@ -3,6 +3,7 @@
 	import '../app.css';
 	import '../icons-bundle.ts';
 	import { colorTheme } from '../stores';
+	import '../classes/LightsBridge.svelte';
 	import { addIcon } from '@iconify/svelte';
 
 	onMount(() => {
