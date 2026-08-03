@@ -2,6 +2,7 @@
 	import IconButton from './IconButton.svelte';
 	import InPlaceEdit from './InPlaceEdit.svelte';
 	import type Torch from '../classes/Torch.svelte';
+	import TORCH_SETTINGS from '../classes/TorchSettings.svelte';
 	import { currentTime } from '../stores';
 
 	let {
@@ -59,7 +60,7 @@
 			id="time-range"
 			type="range"
 			min="0"
-			max="3600"
+			max={TORCH_SETTINGS.maxSeconds}
 			value={dragValue ?? liveRemaining}
 			oninput={onInput}
 			onchange={onChange}

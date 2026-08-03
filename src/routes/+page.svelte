@@ -54,7 +54,6 @@
 			AMBIENCE.fire.pause();
 		}
 	});
-
 </script>
 
 <div

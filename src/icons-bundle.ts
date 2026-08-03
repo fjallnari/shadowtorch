@@ -42,6 +42,12 @@ addCollection({
 		},
 		wind: {
 			body: '<path fill="currentColor" d="M12 3H8v2h4v2H2v2h12V3h-2zm10 8V7h-6v2h4v2H2v2h20v-2zM2 17v-2h14v6h-6v-2h4v-2H2z">'
+		},
+		zap: {
+			body: '<path fill="currentColor" d="M4 13h8v6h2v2h-2v2h-2v-8H2v-4h2zm12 6h-2v-2h2zm2-2h-2v-2h2zm2-2h-2v-2h2zm-6-6h8v4h-2v-2h-8V5h-2V3h2V1h2zm-8 2H4V9h2zm2-2H6V7h2zm2-2H8V5h2z"/>'
+		},
+		'zap-off': {
+			body: '<g fill="currentColor"><path d="M10 13h2v10h-2z"/><path d="M2 13h10v2H2zM12 1h2v6h-2zm4 8h6v2h-6zm4 2h2v2h-2zm-4 4h2v2h-2zm-2 2h2v2h-2zm-2 2h2v2h-2zM2 11h2v2H2zm2-2h2v2H4zm2-2h2v2H6zm4-4h2v2h-2zM2 1h2v2H2zm2 2h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2z"/><path d="M16 15h2v2h-2zm2 2h2v2h-2zm2 2h2v2h-2z"/></g>'
 		}
 	}
 });
