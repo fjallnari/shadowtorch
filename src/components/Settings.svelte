@@ -47,7 +47,7 @@
 		<h1 class="text-2xl uppercase">blitz mode on/off (30/60 min)</h1>
 		<div class="w-fit">
 			<IconButton
-				icon={TORCH_SETTINGS.hideCountdown ? 'pixelarticons:eye-closed' : 'pixelarticons:eye'}
+				icon={TORCH_SETTINGS.hideCountdown ? 'pixelarticons:eye-off' : 'pixelarticons:eye'}
 				click={() => (TORCH_SETTINGS.hideCountdown = !TORCH_SETTINGS.hideCountdown)}
 			/>
 		</div>
