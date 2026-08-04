@@ -5,6 +5,7 @@
 	import Torch from '../classes/Torch.svelte';
 	import { currentTime } from '../stores';
 	import { t } from '../classes/Torches.svelte';
+	import TORCH_SETTINGS from '../classes/TorchSettings.svelte';
 
 	let {
 		torchesLit,
@@ -25,17 +26,20 @@
 		return '1';
 	});
 
+	let torchTimerText = $derived(
+		t.torches[shortestTorch] ? 
+		t.torches[shortestTorch]?.prettyTime($currentTime) : 
+		Object.keys(t.torches).length === 0 ? 'No torches': 'No torches lit'
+	);
+
 </script>
 
 <div class="flex flex-col justify-center items-center row-span-2 col-span-full gap-1">
-	<h1
-		class="text-3xl font-vt323 text-accent-300 {t.torches[shortestTorch] && !t.torches[shortestTorch].isLit
-			? 'animate-pulse'
-			: ''}"
-	>
-		{t.torches[shortestTorch] ? t.torches[shortestTorch]?.prettyTime($currentTime)
-		: Object.keys(t.torches).length === 0 ? 'No torches': 'No torches lit'}
-	</h1>
+	{#if !TORCH_SETTINGS.hideCountdown || !t.torches[shortestTorch]}
+		<h1 class="text-3xl font-vt323 text-accent-300 {t.torches[shortestTorch] && !t.torches[shortestTorch].isLit ? 'animate-pulse' : ''}">
+			{torchTimerText}
+		</h1>
+	{/if}
 	{#if torchesLit - 1 > 0}
 		<h1 class="text-xl font-vt323 text-zinc-400">
 			{torchesLit - 1} other torch{torchesLit - 1 != 1 ? 'es' : ''} lit
@@ -46,7 +50,7 @@
 			{`${Object.keys(t.torches).length} unlit torch${Object.keys(t.torches).length != 1 ? 'es' : ''}`}
 		</h1>
 	{/if}
-	{#if longestTorch}
+	{#if longestTorch && !TORCH_SETTINGS.hideCountdown}
 		<h1 class="text-xl font-vt323 text-zinc-400">
 			Darkness in {t.torches[longestTorch]?.prettyTime($currentTime)}
 		</h1>
